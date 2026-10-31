@@ -5,33 +5,38 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:1280vh;background:#F4F2EF;overscroll-behavior:contain}
+.stage{position:relative;height:1360vh;background:#F4F2EF;overscroll-behavior:contain}
 .stage-pin{
   position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;
   isolation:isolate;background:#F4F2EF;
-  /* locked full-screen pin — tiny exit ease only at end of scrub */
-  transform:scale(calc(1 - var(--pin,0)*.045));
-  will-change:transform;
+  /* fully locked full-screen pin — no scale drift */
+  transform:translateZ(0);
+  contain:paint;
   touch-action:pan-y;
+}
+.stage-cream{
+  position:absolute;inset:0;z-index:0;pointer-events:none;background:#F4F2EF;
+  transform:translate3d(0,calc((1 - var(--hp,0))*100%),0);
+  will-change:transform;
 }
 .stage-hero{
   position:absolute;inset:0;z-index:4;overflow:hidden;will-change:transform,mask-image;
-  /* soft curtain wipe — longer feather, mask-only */
+  /* soft curtain wipe — cream bed rises underneath */
   -webkit-mask-image:linear-gradient(
     to bottom,
     #000 0%,
-    #000 calc((1 - var(--hp,0)) * 100% - 11vh),
-    rgba(0,0,0,.55) calc((1 - var(--hp,0)) * 100% - 3.5vh),
-    transparent calc((1 - var(--hp,0)) * 100% + 4.2vh)
+    #000 calc((1 - var(--hp,0)) * 100% - 9vh),
+    rgba(0,0,0,.7) calc((1 - var(--hp,0)) * 100% - 2.2vh),
+    transparent calc((1 - var(--hp,0)) * 100% + 5.5vh)
   );
   mask-image:linear-gradient(
     to bottom,
     #000 0%,
-    #000 calc((1 - var(--hp,0)) * 100% - 11vh),
-    rgba(0,0,0,.55) calc((1 - var(--hp,0)) * 100% - 3.5vh),
-    transparent calc((1 - var(--hp,0)) * 100% + 4.2vh)
+    #000 calc((1 - var(--hp,0)) * 100% - 9vh),
+    rgba(0,0,0,.7) calc((1 - var(--hp,0)) * 100% - 2.2vh),
+    transparent calc((1 - var(--hp,0)) * 100% + 5.5vh)
   );
-  transform:translate3d(0,calc(var(--hp,0)*-18vh),0) scale(calc(1 - var(--hp,0)*.075));
+  transform:translate3d(0,calc(var(--hp,0)*-22vh),0) scale(calc(1 - var(--hp,0)*.085));
   pointer-events:auto;
 }
 .stage[data-phase="2"] .stage-hero{pointer-events:none}
@@ -104,19 +109,19 @@ html{scroll-behavior:auto}
 /* giant type behind floats — fully revealed after wipe */
 .stage-giant{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.62;
-  letter-spacing:calc(-.058em + var(--sp,0)*.11em + var(--hold,0)*.012em);
-  font-size:calc(27vw * var(--gs,1));
-  transform:translate3d(0,calc((1 - var(--hp,0))*56vh + var(--fp,0)*-1.6vh),0) scale(calc(.72 + var(--hp,0)*.28 + var(--hold,0)*.035));
-  opacity:calc(var(--hp,0) * (1.04 - var(--fp,0)*.04));
+  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.58;
+  letter-spacing:calc(-.062em + var(--sp,0)*.1em + var(--hold,0)*.014em);
+  font-size:calc(29vw * var(--gs,1));
+  transform:translate3d(0,calc((1 - var(--hp,0))*58vh + var(--fp,0)*-1.2vh),0) scale(calc(.68 + var(--hp,0)*.32 + var(--hold,0)*.04 + var(--pop,0)*.04));
+  opacity:calc(var(--hp,0) * (1.05 - var(--fp,0)*.03));
   user-select:none;pointer-events:none;text-align:center;
-  filter:contrast(1.12) blur(calc((1 - var(--hp,0)) * 8px));
+  filter:contrast(1.14) blur(calc((1 - var(--hp,0)) * 9px));
   will-change:transform,opacity,letter-spacing,filter;
 }
 .stage-giant span{display:block;white-space:nowrap}
 /* stay centered while early cards cross; split later via --sp */
-.stage-giant .g1{transform:translateX(calc(var(--sp,0)*-38vw))}
-.stage-giant .g2{transform:translateX(calc(var(--sp,0)*38vw));margin-top:.002em}
+.stage-giant .g1{transform:translateX(calc(var(--sp,0)*-36vw))}
+.stage-giant .g2{transform:translateX(calc(var(--sp,0)*36vw));margin-top:.0em}
 .stage-veil{
   position:absolute;inset:0;z-index:2;pointer-events:none;
   background:radial-gradient(ellipse at 50% 48%,transparent 18%,rgba(244,242,239,.28) 62%,rgba(244,242,239,.55) 100%);
@@ -124,26 +129,27 @@ html{scroll-behavior:auto}
 }
 
 /* floating tilted polaroid cards crossing type */
-.stage-floats{position:absolute;inset:0;z-index:3;pointer-events:none;perspective:2200px}
+.stage-floats{position:absolute;inset:0;z-index:3;pointer-events:none;perspective:2400px}
 .stage-floats .track{
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
-  gap:clamp(52px,6.2vw,112px);padding-left:72vw;padding-right:72vw;will-change:transform;
+  gap:clamp(58px,6.8vw,120px);padding-left:78vw;padding-right:78vw;will-change:transform;
   transform-style:preserve-3d
 }
 .float-card{
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
-  width:clamp(156px,15vw,228px);margin-top:var(--t);
+  width:clamp(160px,15.4vw,234px);margin-top:var(--t);
   transform:
-    translate3d(0, calc(var(--bob,0)*1px), var(--z,0px))
+    translate3d(0, calc(var(--bob,0)*1px - var(--lift,0)*1px), var(--z,0px))
     rotateY(var(--ry,0deg))
+    rotateX(var(--rx,0deg))
     rotate(calc(var(--r) + var(--spin,0deg) + var(--tilt,0deg)))
     scale(calc(var(--fs,1) * var(--enter,1)));
   background:#fff;border-radius:12px;
   box-shadow:
-    0 calc(22px + var(--prox,0)*22px) calc(52px + var(--prox,0)*36px) rgba(0,0,0,calc(.18 + var(--prox,0)*.2)),
-    0 2px 0 rgba(255,255,255,.65) inset;
+    0 calc(20px + var(--prox,0)*28px) calc(48px + var(--prox,0)*44px) rgba(0,0,0,calc(.16 + var(--prox,0)*.24)),
+    0 1px 0 rgba(255,255,255,.7) inset;
   color:#1A1A1A;
-  transition:box-shadow .35s;
+  transition:box-shadow .3s;
   /* solid polaroids — type peeks in mid-band between high/low cards */
   opacity:calc(var(--hp,0) * var(--vis,1));
   will-change:transform,opacity,box-shadow;
@@ -236,10 +242,10 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:980vh}
-  .float-card{width:64vw}
-  .stage-giant{font-size:28vw}
-  .stage-floats .track{padding-left:98vw;gap:26px}
+  .stage{height:1040vh}
+  .float-card{width:66vw}
+  .stage-giant{font-size:30vw}
+  .stage-floats .track{padding-left:100vw;gap:28px}
   .stage-progress{display:none}
   .fabric-grid.is-list .fabric-card{grid-template-columns:96px 1fr;gap:14px}
 }
