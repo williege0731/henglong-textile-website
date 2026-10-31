@@ -70,23 +70,24 @@
     if(stage && !reduce){
       const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-vh);
       const p=clamp((y-top)/len);
-      p0=easeOut(clamp(p/0.1));
-      hp=easeInOut(clamp((p-0.08)/0.24));
-      fp=easeOut(clamp((p-0.28)/0.72));
-      gs=1-fp*0.2;
-      phase=p<0.1?'0':(p<0.32?'1':'2');
-      onHero=hp<0.55;
+      p0=easeOut(clamp(p/0.08));
+      hp=easeInOut(clamp((p-0.06)/0.26));
+      /* hold on giant type before cards start crossing */
+      fp=easeOut(clamp((p-0.34)/0.66));
+      gs=1-fp*0.22;
+      phase=p<0.08?'0':(p<0.36?'1':'2');
+      onHero=hp<0.62;
     }
     return {y,vh,p0,hp,fp,gs,phase,onHero};
   }
 
   function apply(t,hard){
     if(stage && !reduce){
-      const k=hard?1:0.085;
-      smooth.p0=lerp(smooth.p0,t.p0,hard?1:0.12);
+      const k=hard?1:0.078;
+      smooth.p0=lerp(smooth.p0,t.p0,hard?1:0.11);
       smooth.hp=lerp(smooth.hp,t.hp,k);
-      smooth.fp=lerp(smooth.fp,t.fp,hard?1:0.07);
-      smooth.gs=lerp(smooth.gs,t.gs,hard?1:0.1);
+      smooth.fp=lerp(smooth.fp,t.fp,hard?1:0.062);
+      smooth.gs=lerp(smooth.gs,t.gs,hard?1:0.09);
       stage.style.setProperty('--p0',smooth.p0.toFixed(4));
       stage.style.setProperty('--hp',smooth.hp.toFixed(4));
       stage.style.setProperty('--fp',smooth.fp.toFixed(4));
@@ -96,8 +97,8 @@
         const dist=Math.max(track.scrollWidth-innerWidth*0.25,1);
         track.style.transform=`translate3d(${(-smooth.fp*dist).toFixed(2)}px,0,0)`;
         [...track.children].forEach((c,i)=>{
-          const bob=Math.sin(smooth.fp*5.8+i*0.95)*38*(0.5+0.5*Math.abs(Math.sin(i*1.3)));
-          const scale=1+Math.sin(smooth.fp*2.8+i*0.7)*0.035;
+          const bob=Math.sin(smooth.fp*6.4+i*1.05)*46*(0.45+0.55*Math.abs(Math.sin(i*1.4)));
+          const scale=1+Math.sin(smooth.fp*3.1+i*0.75)*0.045;
           c.style.setProperty('--bob',bob.toFixed(2));
           c.style.setProperty('--fs',scale.toFixed(3));
         });
@@ -134,25 +135,20 @@
   let running=false;
   function loop(){
     apply(targets(),false);
-    const t=targets();
-    const need=stage && !reduce && (
-      Math.abs(smooth.hp-t.hp)>0.0004 ||
-      Math.abs(smooth.fp-t.fp)>0.0004 ||
-      Math.abs(smooth.p0-t.p0)>0.0004
-    );
-    if(need){running=true;requestAnimationFrame(loop);}
-    else running=false;
+    running=true;
+    requestAnimationFrame(loop);
   }
   function kick(){if(!running){running=true;requestAnimationFrame(loop);}}
   addEventListener('scroll',kick,{passive:true});
-  addEventListener('resize',()=>{apply(targets(),true);kick();});
+  addEventListener('resize',()=>{apply(targets(),true);});
   apply(targets(),true);
+  if(stage && !reduce) kick();
 
   /* QA frames: ?shot=hero|wipe|cards — hard scrub after layout */
   function goShot(name){
     if(!stage||reduce)return;
     const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-innerHeight);
-    const map={hero:0.02,wipe:0.22,stage1:0.22,cards:0.55,stage2:0.55,stage0:0.02,stage3:0.82};
+    const map={hero:0.02,wipe:0.24,midwipe:0.16,stage1:0.24,cards:0.58,stage2:0.58,stage0:0.02,stage3:0.84};
     const p=map[name];
     if(p==null)return;
     scrollTo(0, top+len*p);

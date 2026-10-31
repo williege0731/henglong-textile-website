@@ -5,7 +5,7 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:700vh;background:#F4F2EF}
+.stage{position:relative;height:780vh;background:#F4F2EF}
 .stage-pin{
   position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;
   isolation:isolate;background:#F4F2EF;
@@ -14,8 +14,14 @@ html{scroll-behavior:auto}
   position:absolute;inset:0;z-index:4;overflow:hidden;will-change:transform,clip-path;
   /* bottom wipe reveals cream + giant type underneath */
   clip-path:inset(0 0 calc(var(--hp,0)*100%) 0);
-  transform:translate3d(0,calc(var(--hp,0)*-6vh),0);
+  transform:translate3d(0,calc(var(--hp,0)*-8vh),0) scale(calc(1 - var(--hp,0)*.035));
   pointer-events:auto;
+}
+.stage-hero::before{
+  content:"";position:absolute;left:0;right:0;bottom:calc(var(--hp,0)*100% - 1px);height:2px;z-index:5;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.85),transparent);
+  opacity:calc(var(--hp,0) * (1 - var(--hp,0)) * 4);
+  pointer-events:none;
 }
 .stage-hero .hero-media{position:absolute;inset:-10% 0 -4%}
 .stage-hero .hero-media img{
@@ -76,16 +82,17 @@ html{scroll-behavior:auto}
 /* giant type behind floats — fully revealed after wipe */
 .stage-giant{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.78;
-  letter-spacing:calc(-.03em + var(--fp,0)*.05em);
-  font-size:calc(18vw * var(--gs,1));
-  transform:translate3d(0,calc((1 - var(--hp,0))*36vh),0) scale(calc(.88 + var(--hp,0)*.12));
-  opacity:calc(var(--hp,0)*1.05);
+  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.74;
+  letter-spacing:calc(-.035em + var(--fp,0)*.06em);
+  font-size:calc(19.5vw * var(--gs,1));
+  transform:translate3d(0,calc((1 - var(--hp,0))*40vh),0) scale(calc(.86 + var(--hp,0)*.14));
+  opacity:calc(var(--hp,0)*1.08);
   user-select:none;pointer-events:none;text-align:center;
+  filter:contrast(1.02);
 }
 .stage-giant span{display:block;white-space:nowrap}
-.stage-giant .g1{transform:translateX(calc((var(--fp,0) - .5)*22vw))}
-.stage-giant .g2{transform:translateX(calc((.5 - var(--fp,0))*22vw));margin-top:.02em}
+.stage-giant .g1{transform:translateX(calc((var(--fp,0) - .5)*28vw))}
+.stage-giant .g2{transform:translateX(calc((.5 - var(--fp,0))*28vw));margin-top:.015em}
 .stage-veil{
   position:absolute;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(ellipse at 50% 45%,transparent 28%,rgba(244,242,239,.5) 72%);
@@ -96,16 +103,16 @@ html{scroll-behavior:auto}
 .stage-floats{position:absolute;inset:0;z-index:3;pointer-events:none}
 .stage-floats .track{
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
-  gap:clamp(28px,4.2vw,72px);padding-left:108vw;padding-right:30vw;will-change:transform
+  gap:clamp(22px,3.4vw,56px);padding-left:100vw;padding-right:40vw;will-change:transform
 }
 .float-card{
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
-  width:clamp(210px,21vw,310px);margin-top:var(--t);
+  width:clamp(200px,19.5vw,290px);margin-top:var(--t);
   transform:rotate(var(--r)) translateY(calc(var(--bob,0)*1px)) scale(var(--fs,1));
-  background:#fff;border-radius:12px;box-shadow:0 24px 60px rgba(0,0,0,.2);
+  background:#fff;border-radius:12px;box-shadow:0 26px 64px rgba(0,0,0,.22);
   color:#1A1A1A;
   transition:box-shadow .7s;
-  opacity:calc(.35 + var(--hp,0)*.65);
+  opacity:calc(.2 + var(--hp,0)*.8);
 }
 .float-card:hover{
   transform:rotate(0deg) scale(1.09) translateY(-12px);
@@ -193,7 +200,7 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:560vh}
+  .stage{height:620vh}
   .float-card{width:62vw}
   .stage-giant{font-size:26vw}
   .stage-floats .track{padding-left:95vw;gap:22px}
