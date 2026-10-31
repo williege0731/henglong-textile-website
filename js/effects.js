@@ -2,8 +2,8 @@
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const header=document.querySelector('.site-header');
   const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
-  const ease=t=>1-Math.pow(1-t,3);
-  const easeInOut=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  const easeOut=t=>1-Math.pow(1-t,3);
+  const easeInOut=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
   const lerp=(a,b,t)=>a+(b-a)*t;
 
   const stage=document.querySelector('[data-stage]');
@@ -11,12 +11,16 @@
   const smooth={p0:0,hp:0,fp:0,gs:1};
   if(stage && !reduce){
     const floats=stage.querySelector('.stage-floats');
-    track=document.createElement('div');track.className='track';
-    [...floats.children].forEach(c=>track.appendChild(c));
-    floats.appendChild(track);
+    if(floats && !floats.querySelector('.track')){
+      track=document.createElement('div');track.className='track';
+      [...floats.children].forEach(c=>track.appendChild(c));
+      floats.appendChild(track);
+    }else{
+      track=floats&&floats.querySelector('.track');
+    }
   }
 
-  let lastY=scrollY, hideArmed=false;
+  let lastY=scrollY;
   document.querySelectorAll('.rail').forEach(r=>{
     const bar=document.createElement('div');bar.className='rail-progress';bar.innerHTML='<i></i>';
     r.after(bar);
@@ -55,41 +59,46 @@
   const eh=document.querySelector('.explore-hero h1');
   const velvet=document.querySelector('.velvet-band .visual');
 
+  /* Progress map (of stage scroll 0..1):
+     0–0.10  hero settle (p0)
+     0.10–0.32 wipe + giant type rise (hp)
+     0.28–1.0  cards scrub across type (fp)
+  */
   function targets(){
     const y=scrollY,vh=innerHeight;
     let p0=0,hp=0,fp=0,gs=1,phase='0',onHero=false;
     if(stage && !reduce){
       const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-vh);
       const p=clamp((y-top)/len);
-      p0=ease(clamp(p/0.14));
-      hp=easeInOut(clamp((p-0.12)/0.2));
-      fp=ease(clamp((p-0.26)/0.74));
-      gs=1-fp*0.18;
-      phase=p<0.09?'0':(p<0.24?'1':'2');
-      onHero=y<top+len*0.3;
+      p0=easeOut(clamp(p/0.1));
+      hp=easeInOut(clamp((p-0.08)/0.24));
+      fp=easeOut(clamp((p-0.28)/0.72));
+      gs=1-fp*0.2;
+      phase=p<0.1?'0':(p<0.32?'1':'2');
+      onHero=hp<0.55;
     }
     return {y,vh,p0,hp,fp,gs,phase,onHero};
   }
 
   function apply(t,hard){
     if(stage && !reduce){
-      const k=hard?1:0.12;
-      smooth.p0=lerp(smooth.p0,t.p0,k);
-      smooth.hp=lerp(smooth.hp,t.hp,hard?1:0.1);
-      smooth.fp=lerp(smooth.fp,t.fp,hard?1:0.09);
-      smooth.gs=lerp(smooth.gs,t.gs,k);
+      const k=hard?1:0.085;
+      smooth.p0=lerp(smooth.p0,t.p0,hard?1:0.12);
+      smooth.hp=lerp(smooth.hp,t.hp,k);
+      smooth.fp=lerp(smooth.fp,t.fp,hard?1:0.07);
+      smooth.gs=lerp(smooth.gs,t.gs,hard?1:0.1);
       stage.style.setProperty('--p0',smooth.p0.toFixed(4));
       stage.style.setProperty('--hp',smooth.hp.toFixed(4));
       stage.style.setProperty('--fp',smooth.fp.toFixed(4));
       stage.style.setProperty('--gs',smooth.gs.toFixed(4));
       stage.dataset.phase=t.phase;
       if(track){
-        const dist=Math.max(track.scrollWidth-innerWidth*0.35,1);
-        track.style.transform=`translate3d(${(-smooth.fp*dist).toFixed(1)}px,0,0)`;
+        const dist=Math.max(track.scrollWidth-innerWidth*0.25,1);
+        track.style.transform=`translate3d(${(-smooth.fp*dist).toFixed(2)}px,0,0)`;
         [...track.children].forEach((c,i)=>{
-          const bob=Math.sin(smooth.fp*6.2+i*0.85)*34*(0.55+0.45*Math.sin(i));
-          const scale=1+Math.sin(smooth.fp*3.2+i)*0.02;
-          c.style.setProperty('--bob',bob.toFixed(1));
+          const bob=Math.sin(smooth.fp*5.8+i*0.95)*38*(0.5+0.5*Math.abs(Math.sin(i*1.3)));
+          const scale=1+Math.sin(smooth.fp*2.8+i*0.7)*0.035;
+          c.style.setProperty('--bob',bob.toFixed(2));
           c.style.setProperty('--fs',scale.toFixed(3));
         });
       }
@@ -104,18 +113,17 @@
 
     if(header){
       const d=t.y-lastY;
-      const inEarlyStage=stage && t.phase!=='2' && t.onHero;
-      if(!inEarlyStage && t.y>180 && d>8){header.classList.add('hide');hideArmed=true;}
-      else if(d<-6 || t.y<160 || inEarlyStage){header.classList.remove('hide');hideArmed=false;}
+      const inEarly=stage && t.phase!=='2' && t.onHero;
+      if(!inEarly && t.y>200 && d>8) header.classList.add('hide');
+      else if(d<-6 || t.y<160 || inEarly) header.classList.remove('hide');
     }
     if(dock && pills){
       const pr=pills.getBoundingClientRect();
-      const away=pr.bottom>48 && t.y<240;
-      dock.classList.toggle('away',away);
+      dock.classList.toggle('away',pr.bottom>48 && t.y<240);
       pills.classList.toggle('stuck',pr.top<=76 && pr.bottom>0);
     }
-    if(toTop)toTop.classList.toggle('away',t.y<t.vh*0.7);
-    if(eh)eh.style.setProperty('--hs',(1-clamp(t.y/480)*0.42).toFixed(3));
+    if(toTop) toTop.classList.toggle('away',t.y<t.vh*0.7);
+    if(eh) eh.style.setProperty('--hs',(1-clamp(t.y/480)*0.42).toFixed(3));
     if(velvet){
       const r=velvet.getBoundingClientRect();
       velvet.style.setProperty('--par',((r.top+r.height/2-t.vh/2)*-0.16).toFixed(1));
@@ -123,28 +131,44 @@
     lastY=t.y;
   }
 
-  let ticking=false;
-  function tick(hard){
-    apply(targets(),hard);
-    ticking=false;
-    if(!hard && stage && !reduce){
-      const need=Math.abs(smooth.hp-targets().hp)>0.0008 || Math.abs(smooth.fp-targets().fp)>0.0008;
-      if(need){ticking=true;requestAnimationFrame(()=>tick(false));}
-    }
+  let running=false;
+  function loop(){
+    apply(targets(),false);
+    const t=targets();
+    const need=stage && !reduce && (
+      Math.abs(smooth.hp-t.hp)>0.0004 ||
+      Math.abs(smooth.fp-t.fp)>0.0004 ||
+      Math.abs(smooth.p0-t.p0)>0.0004
+    );
+    if(need){running=true;requestAnimationFrame(loop);}
+    else running=false;
   }
-  addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(()=>tick(false));}},{passive:true});
-  addEventListener('resize',()=>tick(true));
-  tick(true);
+  function kick(){if(!running){running=true;requestAnimationFrame(loop);}}
+  addEventListener('scroll',kick,{passive:true});
+  addEventListener('resize',()=>{apply(targets(),true);kick();});
+  apply(targets(),true);
 
-  // QA: ?shot=stage2|stage1|products scrolls to a known lookbook frame
-  try{
-    const m=(location.search.match(/[?&]shot=([\w-]+)/)||[])[1];
-    if(m && stage && !reduce){
-      const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-innerHeight);
-      const map={stage0:0.02,stage1:0.16,stage2:0.48,stage3:0.78};
-      if(map[m]!=null){scrollTo(0, top+len*map[m]); setTimeout(()=>tick(true),60);}
-    }
-  }catch(_){}
+  /* QA frames: ?shot=hero|wipe|cards — hard scrub after layout */
+  function goShot(name){
+    if(!stage||reduce)return;
+    const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-innerHeight);
+    const map={hero:0.02,wipe:0.22,stage1:0.22,cards:0.55,stage2:0.55,stage0:0.02,stage3:0.82};
+    const p=map[name];
+    if(p==null)return;
+    scrollTo(0, top+len*p);
+    apply(targets(),true);
+    requestAnimationFrame(()=>{apply(targets(),true);document.documentElement.dataset.shotReady='1';});
+  }
+  const shot=(location.search.match(/[?&]shot=([\w-]+)/)||[])[1];
+  if(shot){
+    const wait=()=>{
+      const imgs=[...document.images];
+      if(imgs.some(i=>!i.complete)){setTimeout(wait,80);return;}
+      goShot(shot);
+      setTimeout(()=>goShot(shot),200);
+    };
+    wait();
+  }
 
   document.querySelectorAll('.fabric-card').forEach(card=>{
     const thumb=card.querySelector('.thumb');
@@ -154,10 +178,12 @@
     card.querySelectorAll('.swatches i').forEach(sw=>{
       const url=(sw.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/)||[])[1];
       if(!url)return;
-      sw.addEventListener('mouseenter',()=>{alt.src=url;thumb.classList.add('swap');sw.classList.add('on');});
-      sw.addEventListener('mouseleave',()=>{thumb.classList.remove('swap');sw.classList.remove('on');});
-      sw.addEventListener('focus',()=>{alt.src=url;thumb.classList.add('swap');sw.classList.add('on');});
-      sw.addEventListener('blur',()=>{thumb.classList.remove('swap');sw.classList.remove('on');});
+      const show=()=>{alt.src=url;thumb.classList.add('swap');sw.classList.add('on');};
+      const hide=()=>{thumb.classList.remove('swap');sw.classList.remove('on');};
+      sw.addEventListener('mouseenter',show);
+      sw.addEventListener('mouseleave',hide);
+      sw.addEventListener('focus',show);
+      sw.addEventListener('blur',hide);
       sw.tabIndex=0;
       sw.setAttribute('role','button');
       sw.setAttribute('aria-label','预览色号');
