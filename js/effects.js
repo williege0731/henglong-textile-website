@@ -70,63 +70,72 @@
     if(stage && !reduce){
       const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-vh);
       p=clamp((y-top)/len);
-      p0=easeOut(clamp(p/0.055));
-      hp=easeInOut(clamp((p-0.035)/0.30));
-      /* hold centered giant type, then cards cross and split lines */
-      fp=easeOut(clamp((p-0.40)/0.60));
-      gs=1-fp*0.32;
-      phase=p<0.055?'0':(p<0.42?'1':'2');
-      onHero=hp<0.5;
+      p0=easeOut(clamp(p/0.05));
+      hp=easeInOut(clamp((p-0.03)/0.32));
+      /* soft early peek, then main cross — power curve keeps first cards gentle */
+      const raw=clamp((p-0.36)/0.64);
+      fp=Math.pow(easeOut(raw), 0.92);
+      gs=1-fp*0.34;
+      phase=p<0.05?'0':(p<0.40?'1':'2');
+      onHero=hp<0.48;
     }
     return {y,vh,p0,hp,fp,gs,phase,onHero,p};
   }
 
   let vel=0, spin=0, lastT=performance.now();
+  const over={hp:0,fp:0}; /* scrub overshoot that settles */
   function expAlpha(lambda,dt){return 1-Math.exp(-lambda*dt);}
   function apply(t,hard){
     if(stage && !reduce){
       const now=performance.now();
       const dt=Math.min(0.05, Math.max(0.008, (now-lastT)/1000));
       lastT=now;
-      /* frame-rate independent exponential lerp */
+      /* frame-rate independent exponential lerp + light overshoot */
       const dy=t.y-lastY;
       const speed=Math.min(2.4, Math.abs(dy)/20);
       vel=lerp(vel,speed,hard?1:expAlpha(8,dt));
       spin=lerp(spin, Math.max(-1.4, Math.min(1.4, dy/36)), hard?1:expAlpha(6,dt));
       const boost=1+vel*0.7;
-      const aHp=hard?1:expAlpha(6.4*boost,dt);
-      const aFp=hard?1:expAlpha(4.2*boost,dt);
+      const aHp=hard?1:expAlpha(6.8*boost,dt);
+      const aFp=hard?1:expAlpha(4.0*boost,dt);
       smooth.p0=lerp(smooth.p0,t.p0,hard?1:expAlpha(7.5*boost,dt));
       smooth.hp=lerp(smooth.hp,t.hp,aHp);
       smooth.fp=lerp(smooth.fp,t.fp,aFp);
       smooth.gs=lerp(smooth.gs,t.gs,hard?1:expAlpha(6.2,dt));
+      /* overshoot follows scroll impulse, then decays toward 0 */
+      const impulse=hard?0:Math.max(-0.045, Math.min(0.045, dy/900));
+      over.hp=hard?0:lerp(over.hp+impulse*0.6, 0, expAlpha(5.5,dt));
+      over.fp=hard?0:lerp(over.fp+impulse, 0, expAlpha(4.2,dt));
+      const hpV=clamp(smooth.hp+over.hp);
+      const fpV=clamp(smooth.fp+over.fp);
       stage.style.setProperty('--p0',smooth.p0.toFixed(4));
-      stage.style.setProperty('--hp',smooth.hp.toFixed(4));
-      stage.style.setProperty('--fp',smooth.fp.toFixed(4));
+      stage.style.setProperty('--hp',hpV.toFixed(4));
+      stage.style.setProperty('--fp',fpV.toFixed(4));
       stage.style.setProperty('--gs',smooth.gs.toFixed(4));
       stage.style.setProperty('--p',(t.p||0).toFixed(4));
       stage.dataset.phase=t.phase;
       if(track){
         const dist=Math.max(track.scrollWidth-innerWidth*0.1,1);
-        track.style.transform=`translate3d(${(-smooth.fp*dist).toFixed(2)}px,0,0)`;
+        track.style.transform=`translate3d(${(-fpV*dist).toFixed(2)}px,0,0)`;
         const mid=innerWidth*0.5;
         [...track.children].forEach((c,i)=>{
           const r=c.getBoundingClientRect();
           const cx=r.left+r.width*0.5;
           const prox=1-Math.min(1, Math.abs(cx-mid)/(innerWidth*0.58));
-          /* enter: scale up as card approaches from right; vis: fully solid in view */
           const enter=clamp((innerWidth*1.05-r.left)/(innerWidth*0.35), 0.72, 1);
           const vis=clamp((r.right+40)/(r.width*0.4), 0, 1);
-          const bob=Math.sin(smooth.fp*8.1+i*1.25)*48*(0.25+0.75*Math.abs(Math.sin(i*1.5)));
-          const scale=0.92+prox*0.14+Math.sin(smooth.fp*4+i)*0.025;
-          const z=(prox*42+Math.sin(smooth.fp*2.6+i)*8).toFixed(1)+'px';
+          const bob=Math.sin(fpV*8.1+i*1.25)*48*(0.25+0.75*Math.abs(Math.sin(i*1.5)));
+          const scale=0.92+prox*0.14+Math.sin(fpV*4+i)*0.025;
+          const z=(prox*42+Math.sin(fpV*2.6+i)*8).toFixed(1)+'px';
           const sp=(spin*(i%2===0?1:-1)*3.1).toFixed(2)+'deg';
+          const tilt=((cx-mid)/innerWidth*-6).toFixed(2)+'deg';
           c.style.setProperty('--bob',bob.toFixed(2));
           c.style.setProperty('--fs',scale.toFixed(3));
           c.style.setProperty('--z',z);
           c.style.setProperty('--spin',sp);
+          c.style.setProperty('--tilt',tilt);
           c.style.setProperty('--enter',enter.toFixed(3));
-          c.style.setProperty('--vis',Math.max(vis, smooth.fp>0.02?1:vis).toFixed(3));
+          c.style.setProperty('--vis',Math.max(vis, fpV>0.02?1:vis).toFixed(3));
         });
       }
       if(header){
@@ -174,7 +183,7 @@
   function goShot(name){
     if(!stage||reduce)return;
     const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-innerHeight);
-    const map={hero:0.02,wipe:0.32,midwipe:0.12,stage1:0.32,cards:0.50,stage2:0.50,stage0:0.02,stage3:0.92};
+    const map={hero:0.02,wipe:0.34,midwipe:0.11,stage1:0.34,cards:0.48,stage2:0.48,stage0:0.02,stage3:0.93};
     const p=map[name];
     if(p==null)return;
     scrollTo(0, top+len*p);
