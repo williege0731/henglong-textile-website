@@ -5,15 +5,16 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:4800vh;background:#F4F2EF;overscroll-behavior:contain}
+.stage{position:relative;height:5000vh;background:#F4F2EF;overscroll-behavior:contain}
 .stage-pin{
   position:sticky;top:0;
   height:100vh;height:100dvh;height:100svh;height:100lvh;
   min-height:100vh;min-height:100dvh;min-height:100svh;min-height:100lvh;
   overflow:hidden;isolation:isolate;background:#F4F2EF;
   /* fully locked full-screen pin — no scale drift */
-  transform:translateZ(0);
-  contain:paint;
+  transform:translate3d(0,0,0);
+  contain:paint layout;
+  backface-visibility:hidden;
   touch-action:pan-y;
   overscroll-behavior:none;
 }
@@ -26,30 +27,32 @@ html{scroll-behavior:auto}
   position:absolute;inset:0;z-index:4;overflow:hidden;will-change:transform,mask-image,opacity;
   /* soft curtain wipe — --hw peels slightly ahead of type (--hp) */
   -webkit-mask-image:linear-gradient(
-    220deg,
+    222deg,
     #000 0%,
-    #000 calc((1 - var(--hw,var(--hp,0))) * 100% - 36vh),
-    rgba(0,0,0,.994) calc((1 - var(--hw,var(--hp,0))) * 100% - 10vh),
-    rgba(0,0,0,.86) calc((1 - var(--hw,var(--hp,0))) * 100% - 2vh),
-    rgba(0,0,0,.58) calc((1 - var(--hw,var(--hp,0))) * 100% + 5vh),
-    rgba(0,0,0,.28) calc((1 - var(--hw,var(--hp,0))) * 100% + 12vh),
-    rgba(0,0,0,.09) calc((1 - var(--hw,var(--hp,0))) * 100% + 19vh),
-    transparent calc((1 - var(--hw,var(--hp,0))) * 100% + 38vh)
+    #000 calc((1 - var(--hw,var(--hp,0))) * 100% - 40vh),
+    rgba(0,0,0,.996) calc((1 - var(--hw,var(--hp,0))) * 100% - 14vh),
+    rgba(0,0,0,.9) calc((1 - var(--hw,var(--hp,0))) * 100% - 4vh),
+    rgba(0,0,0,.62) calc((1 - var(--hw,var(--hp,0))) * 100% + 4vh),
+    rgba(0,0,0,.32) calc((1 - var(--hw,var(--hp,0))) * 100% + 12vh),
+    rgba(0,0,0,.12) calc((1 - var(--hw,var(--hp,0))) * 100% + 20vh),
+    rgba(0,0,0,.04) calc((1 - var(--hw,var(--hp,0))) * 100% + 28vh),
+    transparent calc((1 - var(--hw,var(--hp,0))) * 100% + 44vh)
   );
   mask-image:linear-gradient(
-    220deg,
+    222deg,
     #000 0%,
-    #000 calc((1 - var(--hw,var(--hp,0))) * 100% - 36vh),
-    rgba(0,0,0,.994) calc((1 - var(--hw,var(--hp,0))) * 100% - 10vh),
-    rgba(0,0,0,.86) calc((1 - var(--hw,var(--hp,0))) * 100% - 2vh),
-    rgba(0,0,0,.58) calc((1 - var(--hw,var(--hp,0))) * 100% + 5vh),
-    rgba(0,0,0,.28) calc((1 - var(--hw,var(--hp,0))) * 100% + 12vh),
-    rgba(0,0,0,.09) calc((1 - var(--hw,var(--hp,0))) * 100% + 19vh),
-    transparent calc((1 - var(--hw,var(--hp,0))) * 100% + 38vh)
+    #000 calc((1 - var(--hw,var(--hp,0))) * 100% - 40vh),
+    rgba(0,0,0,.996) calc((1 - var(--hw,var(--hp,0))) * 100% - 14vh),
+    rgba(0,0,0,.9) calc((1 - var(--hw,var(--hp,0))) * 100% - 4vh),
+    rgba(0,0,0,.62) calc((1 - var(--hw,var(--hp,0))) * 100% + 4vh),
+    rgba(0,0,0,.32) calc((1 - var(--hw,var(--hp,0))) * 100% + 12vh),
+    rgba(0,0,0,.12) calc((1 - var(--hw,var(--hp,0))) * 100% + 20vh),
+    rgba(0,0,0,.04) calc((1 - var(--hw,var(--hp,0))) * 100% + 28vh),
+    transparent calc((1 - var(--hw,var(--hp,0))) * 100% + 44vh)
   );
-  /* gentler peel — keep midwipe fabric richer */
-  transform:translate3d(calc(var(--hw,var(--hp,0))*-3.5vw),calc(var(--hw,var(--hp,0))*-44vh),0) scale(calc(1 - var(--hw,var(--hp,0))*.145)) rotate(calc(var(--hw,var(--hp,0))*-0.65deg));
-  opacity:calc(1 - var(--hw,var(--hp,0))*0.1);
+  /* silk peel — retain midwipe fabric mass */
+  transform:translate3d(calc(var(--hw,var(--hp,0))*-2.8vw),calc(var(--hw,var(--hp,0))*-38vh),0) scale(calc(1 - var(--hw,var(--hp,0))*.12)) rotate(calc(var(--hw,var(--hp,0))*-0.5deg));
+  opacity:calc(1 - var(--hw,var(--hp,0))*0.08);
   pointer-events:auto;
 }
 .stage[data-phase="2"] .stage-hero{pointer-events:none}
@@ -124,16 +127,16 @@ html{scroll-behavior:auto}
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
   font-family:"Bodoni Moda",serif;color:#050505;line-height:.46;
   letter-spacing:calc(-.12em + var(--sp,0)*.2em + var(--hold,0)*.16em + var(--cross,0)*.16em);
-  font-size:calc(49vw * var(--gs,1));
-  line-height:.415;
-  transform:perspective(520px) rotateX(calc(var(--depth,0)*-11.5deg)) translate3d(0,calc((1 - var(--hp,0))*46vh + var(--fp,0)*-3.2vh),0) scale(calc(.28 + var(--hp,0)*.72 + var(--hold,0)*.4 + var(--pop,0)*.34 + var(--cross,0)*.13));
+  font-size:calc(52vw * var(--gs,1));
+  line-height:.4;
+  transform:perspective(560px) rotateX(calc(var(--depth,0)*-10deg)) translate3d(0,calc((1 - var(--hp,0))*44vh + var(--fp,0)*-2.6vh),0) scale(calc(.26 + var(--hp,0)*.74 + var(--hold,0)*.48 + var(--pop,0)*.38 + var(--cross,0)*.14));
   /* rise opacity faster mid-wipe so type reads under peeling hero */
-  opacity:min(1, calc(var(--hp,0) * 3.9));
+  opacity:min(1, calc(var(--hp,0) * 4.2));
   user-select:none;pointer-events:none;text-align:center;
   text-shadow:
-    0 calc(2px + var(--cross,0)*26px) calc(34px + var(--depth,0)*52px) rgba(0,0,0,calc(.08 + var(--cross,0)*.26)),
-    calc(var(--cross,0)*-12px) calc(var(--cross,0)*10px) calc(24px + var(--cross,0)*30px) rgba(0,0,0,calc(var(--cross,0)*.16)),
-    calc(var(--cross,0)*11px) calc(var(--cross,0)*-5px) calc(20px + var(--cross,0)*22px) rgba(0,0,0,calc(var(--cross,0)*.1));
+    0 calc(2px + var(--cross,0)*30px) calc(38px + var(--depth,0)*56px) rgba(0,0,0,calc(.1 + var(--cross,0)*.3)),
+    calc(var(--cross,0)*-14px) calc(var(--cross,0)*12px) calc(28px + var(--cross,0)*34px) rgba(0,0,0,calc(var(--cross,0)*.18)),
+    calc(var(--cross,0)*12px) calc(var(--cross,0)*-6px) calc(22px + var(--cross,0)*24px) rgba(0,0,0,calc(var(--cross,0)*.12));
   /* quartic snap — clears even earlier midwipe */
   filter:contrast(1.5) blur(calc((1 - var(--hp,0)) * (1 - var(--hp,0)) * (1 - var(--hp,0)) * (1 - var(--hp,0)) * 10px));
   will-change:transform,opacity,letter-spacing,filter;
@@ -142,12 +145,12 @@ html{scroll-behavior:auto}
 .stage-giant span{display:block;white-space:nowrap;will-change:transform,opacity}
 /* line stagger on reveal; stay centered while early cards cross; split via --sp */
 .stage-giant .g1{
-  transform:translate3d(calc(var(--sp,0)*-56vw), calc((1 - var(--hp,0))*3.5vh), 0);
-  opacity:calc(0.48 + var(--hp,0)*.52);
+  transform:translate3d(calc(var(--sp,0)*-58vw), calc((1 - var(--hp,0))*3vh), 0);
+  opacity:calc(0.52 + var(--hp,0)*.48);
 }
 .stage-giant .g2{
-  transform:translate3d(calc(var(--sp,0)*56vw), calc((1 - var(--hp2,0))*11vh), 0);
-  opacity:calc(0.24 + var(--hp2,0)*.76);
+  transform:translate3d(calc(var(--sp,0)*58vw), calc((1 - var(--hp2,0))*13vh), 0);
+  opacity:calc(0.18 + var(--hp2,0)*.82);
   margin-top:0;
 }
 .stage-veil{
@@ -166,7 +169,7 @@ html{scroll-behavior:auto}
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
   gap:clamp(14px,2.4vw,46px);padding-left:72vw;padding-right:82vw;will-change:transform,filter;
   transform-style:preserve-3d;
-  filter:blur(calc(var(--scrub,0)*0.18px));
+  filter:blur(calc(var(--scrub,0)*0.12px));
 }
 .float-card{
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
@@ -174,13 +177,13 @@ html{scroll-behavior:auto}
   transform-origin:50% 62%;
   transform:
     translate3d(0, calc(var(--bob,0)*1px - var(--lift,0)*1px + var(--rowy,0)*1px), var(--z,0px))
-    rotate(calc(var(--r) * (1.4 + var(--punch,0)*.6) + var(--spin,0deg) + var(--tilt,0deg) + var(--lean,0deg)))
+    rotate(calc(var(--r) * (1.55 + var(--punch,0)*.72) + var(--spin,0deg) + var(--tilt,0deg) + var(--lean,0deg)))
     rotateY(var(--ry,0deg))
     rotateX(var(--rx,0deg))
-    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.55)));
+    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.62)));
   background:#fff;border-radius:12px;
   box-shadow:
-    calc(var(--shx,0)*1px) calc(18px + var(--prox,0)*42px + var(--punch,0)*18px) calc(46px + var(--prox,0)*62px) rgba(0,0,0,calc(.17 + var(--prox,0)*.32 + var(--punch,0)*.15)),
+    calc(var(--shx,0)*1px) calc(20px + var(--prox,0)*46px + var(--punch,0)*22px) calc(50px + var(--prox,0)*68px) rgba(0,0,0,calc(.18 + var(--prox,0)*.34 + var(--punch,0)*.18)),
     0 1px 0 rgba(255,255,255,.74) inset;
   color:#1A1A1A;
   transition:box-shadow .26s;
@@ -283,7 +286,7 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:3750vh}
+  .stage{height:3900vh}
   .float-card{width:74vw}
   .stage-giant{font-size:43vw}
   .stage-floats{-webkit-mask-image:none;mask-image:none}
