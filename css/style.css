@@ -247,3 +247,21 @@ ul{margin:0;padding:0;list-style:none}
   .filter-dock{flex-direction:column;align-items:stretch;gap:10px}
   .wordmark{letter-spacing:.16em;font-size:15px}
 }
+
+
+/* v3 type rhythm + lookbook chrome */
+.collection-block .head .eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.collection-block .head h2{font-size:clamp(32px,4.2vw,56px);letter-spacing:.04em;line-height:1.05}
+.intro-band{padding:110px var(--pad-x) 96px;max-width:980px}
+.intro-band p{font-size:clamp(18px,2.1vw,26px);line-height:1.55;margin:0 0 14px;color:var(--muted)}
+.intro-band .lead{font-family:var(--serif);font-size:clamp(26px,3.2vw,42px);line-height:1.35;color:var(--ink);margin:0}
+.rail{mask-image:linear-gradient(90deg,transparent,#000 2.5%,#000 96%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 2.5%,#000 96%,transparent)}
+.rail-card .cap strong{font-size:clamp(18px,1.6vw,26px)}
+.explore-hero{padding:64px var(--pad-x) 12px}
+.explore-hero .eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);margin:0 0 18px}
+.explore-hero h1{font-size:calc(clamp(64px,11vw,168px) * var(--hs,1));letter-spacing:-.01em}
+.explore-sub{max-width:420px;margin:18px auto 0;color:var(--muted);font-size:14px;line-height:1.65}
+.result-count{margin:22px 0 0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.empty-state{text-align:center;padding:48px var(--pad-x) 80px;color:var(--muted);font-size:14px;letter-spacing:.06em}
+.fabric-grid.is-list{max-width:1040px;padding-left:var(--pad-x);padding-right:var(--pad-x)}
+.pills-bar.stuck{border-bottom-color:var(--line)}

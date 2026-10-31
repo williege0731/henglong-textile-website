@@ -16,7 +16,7 @@
       const past=window.scrollY>hero.offsetHeight-80;
       header.classList.toggle('on-hero',!past);
       header.classList.toggle('solid',past);
-    }else{
+    }else if(!document.querySelector('[data-stage]')){
       header.classList.add('solid');
       header.classList.remove('on-hero');
     }
@@ -24,17 +24,36 @@
   onScroll();
   window.addEventListener('scroll',onScroll,{passive:true});
 
-  // pills
   const pills=[...document.querySelectorAll('[data-filter]')];
   const cards=[...document.querySelectorAll('[data-cat]')];
+  const dims={pattern:'all',cat:'all',use:'all'};
+  let pillKey='all';
+  const countEl=document.querySelector('[data-result-count]');
+
+  function applyFilters(){
+    let n=0;
+    cards.forEach(c=>{
+      const byPill=pillKey==='all'||c.getAttribute('data-cat')===pillKey;
+      const byPat=dims.pattern==='all'||c.getAttribute('data-pattern')===dims.pattern;
+      const byCat=dims.cat==='all'||c.getAttribute('data-cat')===dims.cat;
+      const byUse=dims.use==='all'||c.getAttribute('data-use')===dims.use;
+      const ok=byPill&&byPat&&byCat&&byUse;
+      c.hidden=!ok;
+      c.style.display=ok?'':'none';
+      if(ok)n++;
+    });
+    if(countEl) countEl.textContent=n?`${n} fabrics`:'No matches';
+    const empty=document.querySelector('[data-empty]');
+    if(empty) empty.hidden=n>0;
+  }
+
   pills.forEach(p=>p.addEventListener('click',()=>{
     pills.forEach(x=>x.classList.remove('is-active'));
     p.classList.add('is-active');
-    const key=p.getAttribute('data-filter');
-    cards.forEach(c=>{c.style.display=(key==='all'||c.getAttribute('data-cat')===key)?'':'none';});
+    pillKey=p.getAttribute('data-filter')||'all';
+    applyFilters();
   }));
 
-  // dropdown filters
   document.querySelectorAll('.drop').forEach(drop=>{
     const btn=drop.querySelector(':scope > button');
     btn&&btn.addEventListener('click',e=>{
@@ -49,19 +68,15 @@
         const label=btn.querySelector('[data-label]');
         if(label) label.textContent=opt.textContent.trim();
         const dim=drop.getAttribute('data-dim');
-        const val=opt.getAttribute('data-val');
-        cards.forEach(c=>{
-          if(!dim||val==='all'){ if(!c.style._hideByPill) c.style.display=''; return; }
-          const ok=c.getAttribute('data-'+dim)===val || val==='all';
-          c.style.display=ok?'':'none';
-        });
+        const val=opt.getAttribute('data-val')||'all';
+        if(dim) dims[dim]=val;
         drop.classList.remove('open');
+        applyFilters();
       });
     });
   });
   document.addEventListener('click',()=>document.querySelectorAll('.drop').forEach(d=>d.classList.remove('open')));
 
-  // view toggle
   const grid=document.querySelector('.fabric-grid');
   document.querySelectorAll('[data-view]').forEach(btn=>{
     btn.addEventListener('click',()=>{
@@ -71,8 +86,10 @@
     });
   });
 
+  if(cards.length) applyFilters();
+
   const io=new IntersectionObserver(ents=>{
     ents.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});
-  },{threshold:.12});
+  },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 })();
