@@ -43,7 +43,7 @@ html{scroll-behavior:auto}
 .stage-hero .hero-content.second p{font-size:15px;line-height:1.75;opacity:.92;margin:18px auto 0;max-width:520px}
 .stage[data-phase="1"] .hero-content.first{opacity:0;transform:translateY(-48px);pointer-events:none}
 .stage[data-phase="1"] .hero-content.second{
-  opacity:calc(1 - max(0, var(--hp,0) - .55)*3);transform:none;pointer-events:auto
+  opacity:1;transform:none;pointer-events:auto
 }
 .stage[data-phase="2"] .hero-content.first,
 .stage[data-phase="2"] .hero-content.second{opacity:0;transform:translateY(-36px);pointer-events:none}
