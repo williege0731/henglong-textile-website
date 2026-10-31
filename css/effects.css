@@ -5,7 +5,7 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:1540vh;background:#F4F2EF;overscroll-behavior:contain}
+.stage{position:relative;height:1600vh;background:#F4F2EF;overscroll-behavior:contain}
 .stage-pin{
   position:sticky;top:0;
   height:100vh;height:100dvh;height:100svh;
@@ -41,8 +41,8 @@ html{scroll-behavior:auto}
     rgba(0,0,0,.35) calc((1 - var(--hp,0)) * 100% + 3.2vh),
     transparent calc((1 - var(--hp,0)) * 100% + 8vh)
   );
-  transform:translate3d(calc(var(--hp,0)*-1.2vw),calc(var(--hp,0)*-26vh),0) scale(calc(1 - var(--hp,0)*.095));
-  opacity:calc(1 - var(--hp,0)*0.1);
+  transform:translate3d(calc(var(--hp,0)*-1.6vw),calc(var(--hp,0)*-28vh),0) scale(calc(1 - var(--hp,0)*.11));
+  opacity:calc(1 - var(--hp,0)*0.22);
   pointer-events:auto;
 }
 .stage[data-phase="2"] .stage-hero{pointer-events:none}
@@ -115,15 +115,16 @@ html{scroll-behavior:auto}
 /* giant type behind floats — fully revealed after wipe */
 .stage-giant{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.54;
-  letter-spacing:calc(-.07em + var(--sp,0)*.08em + var(--hold,0)*.022em + var(--cross,0)*.028em);
-  font-size:calc(32vw * var(--gs,1));
-  transform:translate3d(0,calc((1 - var(--hp,0))*64vh + var(--fp,0)*-.6vh),0) scale(calc(.62 + var(--hp,0)*.38 + var(--hold,0)*.055 + var(--pop,0)*.06));
-  opacity:calc(var(--hp,0) * (1.07 - var(--fp,0)*.018));
+  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.53;
+  letter-spacing:calc(-.072em + var(--sp,0)*.075em + var(--hold,0)*.024em + var(--cross,0)*.03em);
+  font-size:calc(33vw * var(--gs,1));
+  transform:perspective(1200px) rotateX(calc(var(--depth,0)*-2.2deg)) translate3d(0,calc((1 - var(--hp,0))*66vh + var(--fp,0)*-.5vh),0) scale(calc(.6 + var(--hp,0)*.4 + var(--hold,0)*.06 + var(--pop,0)*.065));
+  opacity:calc(var(--hp,0) * (1.07 - var(--fp,0)*.015));
   user-select:none;pointer-events:none;text-align:center;
   /* quadratic snap-to-sharp as wipe completes */
-  filter:contrast(1.18) blur(calc((1 - var(--hp,0)) * (1 - var(--hp,0)) * 15px));
+  filter:contrast(1.2) blur(calc((1 - var(--hp,0)) * (1 - var(--hp,0)) * 16px));
   will-change:transform,opacity,letter-spacing,filter;
+  transform-style:preserve-3d;
 }
 .stage-giant span{display:block;white-space:nowrap;will-change:transform,opacity}
 /* line stagger on reveal; stay centered while early cards cross; split via --sp */
@@ -150,7 +151,7 @@ html{scroll-behavior:auto}
 }
 .stage-floats .track{
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
-  gap:clamp(48px,5.8vw,108px);padding-left:86vw;padding-right:86vw;will-change:transform,filter;
+  gap:clamp(44px,5.4vw,100px);padding-left:90vw;padding-right:90vw;will-change:transform,filter;
   transform-style:preserve-3d;
   filter:blur(calc(var(--scrub,0)*1.25px));
 }
@@ -158,11 +159,11 @@ html{scroll-behavior:auto}
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
   width:clamp(168px,16vw,244px);margin-top:var(--t);margin-left:var(--mx,0px);
   transform:
-    translate3d(0, calc(var(--bob,0)*1px - var(--lift,0)*1px + var(--row,0)*var(--fp,0)*-2.4vh), var(--z,0px))
+    translate3d(0, calc(var(--bob,0)*1px - var(--lift,0)*1px + var(--rowy,0)*1px), var(--z,0px))
     rotateY(var(--ry,0deg))
     rotateX(var(--rx,0deg))
     rotate(calc(var(--r) + var(--spin,0deg) + var(--tilt,0deg)))
-    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.11)));
+    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.12)));
   background:#fff;border-radius:12px;
   box-shadow:
     0 calc(16px + var(--prox,0)*36px + var(--punch,0)*12px) calc(40px + var(--prox,0)*54px) rgba(0,0,0,calc(.14 + var(--prox,0)*.28 + var(--punch,0)*.1)),
@@ -261,11 +262,11 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:1220vh}
-  .float-card{width:72vw}
-  .stage-giant{font-size:33vw}
+  .stage{height:1280vh}
+  .float-card{width:74vw}
+  .stage-giant{font-size:34vw}
   .stage-floats{-webkit-mask-image:none;mask-image:none}
-  .stage-floats .track{padding-left:105vw;gap:34px;filter:none}
+  .stage-floats .track{padding-left:106vw;gap:36px;filter:none}
   .stage-progress{display:none}
   .fabric-grid.is-list .fabric-card{grid-template-columns:96px 1fr;gap:14px}
 }
