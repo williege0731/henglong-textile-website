@@ -61,9 +61,9 @@
 
   /* Progress map (of stage scroll 0..1):
      0–0.04  hero settle (p0)
-     0.02–0.16 soft wipe (--hw/--hc) + giant rise (hp); g2 lags
-     0.16–0.45 type hold / breath / pop settle
-     0.42–1.0  cards scrub; type split lags via sp
+     0.02–0.15 soft wipe (--hw/--hc) + giant rise (hp); g2 lags
+     0.15–0.48 type hold / breath / pop settle
+     0.44–1.0  cards scrub; type split lags via sp
   */
   function targets(){
     const y=scrollY,vh=innerHeight;
@@ -72,14 +72,14 @@
       const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-vh);
       p=clamp((y-top)/len);
       p0=easeOut(clamp(p/0.015));
-      hp=easeInOut(clamp((p-0.001)/0.17));
+      hp=easeInOut(clamp((p-0.001)/0.16));
       /* longer hold; crawl then glide; type split waits for denser cross */
-      const raw=clamp((p-0.42)/0.58);
-      fp=Math.pow(easeInOut(raw), 0.45);
-      sp=Math.pow(clamp((fp-0.3)/0.7), 1.25);
-      gs=1-fp*0.36;
-      phase=p<0.03?'0':(p<0.45?'1':'2');
-      onHero=hp<0.42;
+      const raw=clamp((p-0.44)/0.56);
+      fp=Math.pow(easeInOut(raw), 0.48);
+      sp=Math.pow(clamp((fp-0.32)/0.68), 1.3);
+      gs=1-fp*0.34;
+      phase=p<0.03?'0':(p<0.48?'1':'2');
+      onHero=hp<0.44;
     }
     return {y,vh,p0,hp,fp,sp,gs,phase,onHero,p};
   }
@@ -108,23 +108,23 @@
       const look=hard?0:Math.max(-0.22, Math.min(0.22, (dy/220)*0.115));
       smooth.p0=lerp(smooth.p0,t.p0,hard?1:expAlpha(4.6*boost,dt));
       /* dual-stage wipe; --hw leads type; --hc lags for layered cream */
-      smooth.hpMid=lerp(smooth.hpMid,t.hp,hard?1:expAlpha(2.05*boost,dt));
-      smooth.hp=lerp(smooth.hp,smooth.hpMid,hard?1:expAlpha(1.4*boost,dt));
-      smooth.hw=lerp(smooth.hw, clamp(t.hp*1.02), hard?1:expAlpha(2.3*boost,dt));
-      smooth.hc=lerp(smooth.hc, smooth.hw*0.78, hard?1:expAlpha(1.0*boost,dt));
+      smooth.hpMid=lerp(smooth.hpMid,t.hp,hard?1:expAlpha(1.9*boost,dt));
+      smooth.hp=lerp(smooth.hp,smooth.hpMid,hard?1:expAlpha(1.25*boost,dt));
+      smooth.hw=lerp(smooth.hw, clamp(t.hp*1.018), hard?1:expAlpha(2.15*boost,dt));
+      smooth.hc=lerp(smooth.hc, smooth.hw*0.8, hard?1:expAlpha(0.9*boost,dt));
       /* second line lags first for staggered reveal */
-      smooth.hp2=lerp(smooth.hp2, clamp((t.hp-0.3)/0.7), hard?1:expAlpha(1.75*boost,dt));
+      smooth.hp2=lerp(smooth.hp2, clamp((t.hp-0.34)/0.66), hard?1:expAlpha(1.45*boost,dt));
       /* look-ahead creamier spring scrub (softer ω) + display lerp */
       if(hard){spring.fp=t.fp;spring.v=0;spring.sp=t.sp;spring.sv=0;smooth.fpVis=t.fp;smooth.hc=t.hp;}
       else{
-        const s1=springStep(spring.fp, spring.v, clamp(t.fp + coast + look), dt, 0.68*boost);
+        const s1=springStep(spring.fp, spring.v, clamp(t.fp + coast + look), dt, 0.62*boost);
         spring.fp=s1.x; spring.v=s1.v;
-        const s2=springStep(spring.sp, spring.sv, t.sp, dt, 0.44*boost);
+        const s2=springStep(spring.sp, spring.sv, t.sp, dt, 0.4*boost);
         spring.sp=s2.x; spring.sv=s2.v;
       }
       smooth.fp=spring.fp;
       smooth.sp=spring.sp;
-      smooth.fpVis=hard?spring.fp:lerp(smooth.fpVis, spring.fp, expAlpha(1.4*boost,dt));
+      smooth.fpVis=hard?spring.fp:lerp(smooth.fpVis, spring.fp, expAlpha(1.25*boost,dt));
       smooth.gs=lerp(smooth.gs,t.gs,hard?1:expAlpha(4.4,dt));
       smooth.ps=lerp(smooth.ps,t.p||0,hard?1:expAlpha(3.8*boost,dt));
       const impulse=hard?0:Math.max(-0.028, Math.min(0.028, dy/1200));
@@ -134,9 +134,9 @@
       const hp2V=clamp(smooth.hp2);
       const fpV=clamp(smooth.fp+over.fp);
       const spV=clamp(smooth.sp);
-      const popT=(hpV>0.86 && fpV<0.08) ? Math.sin(clamp((hpV-0.86)/0.14)*Math.PI) : 0;
+      const popT=(hpV>0.84 && fpV<0.1) ? Math.sin(clamp((hpV-0.84)/0.16)*Math.PI) : 0;
       smooth.pop=lerp(smooth.pop, popT, hard?1:expAlpha(3.8,dt));
-      const holdT=(hpV>0.94 && fpV<0.07) ? (0.5+0.5*Math.sin(now*0.00095)) : 0;
+      const holdT=(hpV>0.92 && fpV<0.09) ? (0.5+0.5*Math.sin(now*0.00085)) : 0;
       smooth.hold=lerp(smooth.hold, holdT, hard?1:expAlpha(1.9,dt));
       /* velocity smear on track while scrubbing fast */
       const scrubT=clamp((vel-0.28)/1.5);
@@ -162,7 +162,7 @@
       if(track){
         const dist=Math.max(track.scrollWidth-innerWidth*0.05,1);
         const fpDraw=clamp(smooth.fpVis+over.fp);
-        const skew=(spin*0.12 + (smooth.scrub||0)*0.18).toFixed(2);
+        const skew=(spin*0.1 + (smooth.scrub||0)*0.15).toFixed(2);
         track.style.transform=`translate3d(${(-fpDraw*dist).toFixed(2)}px,0,0) skewX(${skew}deg)`;
         const mid=innerWidth*0.5;
         let crossSum=0, crossN=0;
@@ -189,7 +189,7 @@
           const shx=((row?1:-1)*-(20 + punch*28)).toFixed(1);
           /* high/low corridor opens as scrub progresses — type peeks mid-band */
           const rowDir=row?1:-1;
-          const rowy=rowDir*(52 + fpV*110 + punch*96)*-1;
+          const rowy=rowDir*(48 + fpV*105 + punch*88)*-1;
           c.style.setProperty('--lean',lean);
           c.style.setProperty('--shx',shx);
           c.style.setProperty('--zi', Math.round(10+prox*40+punch*20+(row?2:0)).toString());
