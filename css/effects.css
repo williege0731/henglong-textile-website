@@ -5,7 +5,7 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:1720vh;background:#F4F2EF;overscroll-behavior:contain}
+.stage{position:relative;height:1840vh;background:#F4F2EF;overscroll-behavior:contain}
 .stage-pin{
   position:sticky;top:0;
   height:100vh;height:100dvh;height:100svh;
@@ -19,7 +19,7 @@ html{scroll-behavior:auto}
 }
 .stage-cream{
   position:absolute;inset:0;z-index:0;pointer-events:none;background:#F4F2EF;
-  transform:translate3d(0,calc((1 - var(--hp,0))*108%),0);
+  transform:translate3d(0,calc((1 - var(--hp,0))*112%),0);
   will-change:transform;
 }
 .stage-hero{
@@ -41,8 +41,8 @@ html{scroll-behavior:auto}
     rgba(0,0,0,.4) calc((1 - var(--hp,0)) * 100% + 4vh),
     transparent calc((1 - var(--hp,0)) * 100% + 11vh)
   );
-  transform:translate3d(calc(var(--hp,0)*-2.2vw),calc(var(--hp,0)*-32vh),0) scale(calc(1 - var(--hp,0)*.13));
-  opacity:calc(1 - var(--hp,0)*0.38);
+  transform:translate3d(calc(var(--hp,0)*-2.6vw),calc(var(--hp,0)*-34vh),0) scale(calc(1 - var(--hp,0)*.145));
+  opacity:calc(1 - var(--hp,0)*0.55);
   pointer-events:auto;
 }
 .stage[data-phase="2"] .stage-hero{pointer-events:none}
@@ -115,39 +115,40 @@ html{scroll-behavior:auto}
 /* giant type behind floats — fully revealed after wipe */
 .stage-giant{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.52;
-  letter-spacing:calc(-.078em + var(--sp,0)*.09em + var(--hold,0)*.032em + var(--cross,0)*.038em);
-  font-size:calc(34.5vw * var(--gs,1));
-  transform:perspective(1100px) rotateX(calc(var(--depth,0)*-3.4deg)) translate3d(0,calc((1 - var(--hp,0))*72vh + var(--fp,0)*-.7vh),0) scale(calc(.54 + var(--hp,0)*.46 + var(--hold,0)*.08 + var(--pop,0)*.08));
-  opacity:calc(var(--hp,0) * (1.08 - var(--fp,0)*.02));
+  font-family:"Bodoni Moda",serif;color:#121212;line-height:.51;
+  letter-spacing:calc(-.082em + var(--sp,0)*.1em + var(--hold,0)*.036em + var(--cross,0)*.042em);
+  font-size:calc(35.5vw * var(--gs,1));
+  transform:perspective(1000px) rotateX(calc(var(--depth,0)*-4.2deg)) translate3d(0,calc((1 - var(--hp,0))*74vh + var(--fp,0)*-.85vh),0) scale(calc(.5 + var(--hp,0)*.5 + var(--hold,0)*.09 + var(--pop,0)*.09));
+  /* rise opacity faster mid-wipe so type reads under peeling hero */
+  opacity:calc(min(1, var(--hp,0)*1.35) * (1.06 - var(--fp,0)*.025));
   user-select:none;pointer-events:none;text-align:center;
-  /* quadratic snap-to-sharp as wipe completes */
-  filter:contrast(1.22) blur(calc((1 - var(--hp,0)) * (1 - var(--hp,0)) * 18px));
+  /* cubic snap-to-sharp — clears earlier than quadratic */
+  filter:contrast(1.28) blur(calc((1 - var(--hp,0)) * (1 - var(--hp,0)) * (1 - var(--hp,0)) * 22px));
   will-change:transform,opacity,letter-spacing,filter;
   transform-style:preserve-3d;
 }
 .stage-giant span{display:block;white-space:nowrap;will-change:transform,opacity}
 /* line stagger on reveal; stay centered while early cards cross; split via --sp */
 .stage-giant .g1{
-  transform:translate3d(calc(var(--sp,0)*-38vw), calc((1 - var(--hp,0))*8vh), 0);
-  opacity:calc(0.28 + var(--hp,0)*.72);
+  transform:translate3d(calc(var(--sp,0)*-42vw), calc((1 - var(--hp,0))*9vh), 0);
+  opacity:calc(0.4 + var(--hp,0)*.6);
 }
 .stage-giant .g2{
-  transform:translate3d(calc(var(--sp,0)*38vw), calc((1 - var(--hp2,0))*14vh), 0);
-  opacity:calc(0.12 + var(--hp2,0)*.88);
+  transform:translate3d(calc(var(--sp,0)*42vw), calc((1 - var(--hp2,0))*16vh), 0);
+  opacity:calc(0.22 + var(--hp2,0)*.78);
   margin-top:0;
 }
 .stage-veil{
   position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 48%,transparent 18%,rgba(244,242,239,.28) 62%,rgba(244,242,239,.55) 100%);
-  opacity:calc(var(--hp,0)*.32 + var(--fp,0)*.1);
+  background:radial-gradient(ellipse at 50% 48%,transparent 22%,rgba(244,242,239,.18) 64%,rgba(244,242,239,.4) 100%);
+  opacity:calc(var(--hp,0)*.18 + var(--fp,0)*.12);
 }
 
 /* floating tilted polaroid cards crossing type */
 .stage-floats{
   position:absolute;inset:0;z-index:3;pointer-events:none;perspective:2800px;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 7%,#000 93%,transparent 100%);
-  mask-image:linear-gradient(90deg,transparent 0%,#000 7%,#000 93%,transparent 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 5%,#000 95%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 5%,#000 95%,transparent 100%);
 }
 .stage-floats .track{
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
@@ -157,16 +158,16 @@ html{scroll-behavior:auto}
 }
 .float-card{
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
-  width:clamp(168px,16vw,244px);margin-top:var(--t);margin-left:var(--mx,0px);
+  width:clamp(176px,17vw,258px);margin-top:var(--t);margin-left:var(--mx,0px);
   transform:
     translate3d(0, calc(var(--bob,0)*1px - var(--lift,0)*1px + var(--rowy,0)*1px), var(--z,0px))
     rotateY(var(--ry,0deg))
     rotateX(var(--rx,0deg))
     rotate(calc(var(--r) + var(--spin,0deg) + var(--tilt,0deg)))
-    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.16)));
+    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.2)));
   background:#fff;border-radius:12px;
   box-shadow:
-    0 calc(16px + var(--prox,0)*36px + var(--punch,0)*12px) calc(40px + var(--prox,0)*54px) rgba(0,0,0,calc(.14 + var(--prox,0)*.28 + var(--punch,0)*.1)),
+    0 calc(18px + var(--prox,0)*42px + var(--punch,0)*18px) calc(44px + var(--prox,0)*60px) rgba(0,0,0,calc(.16 + var(--prox,0)*.3 + var(--punch,0)*.14)),
     0 1px 0 rgba(255,255,255,.74) inset;
   color:#1A1A1A;
   transition:box-shadow .26s;
@@ -262,7 +263,7 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:1380vh}
+  .stage{height:1480vh}
   .float-card{width:74vw}
   .stage-giant{font-size:34vw}
   .stage-floats{-webkit-mask-image:none;mask-image:none}
