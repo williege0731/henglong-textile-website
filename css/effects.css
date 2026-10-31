@@ -5,7 +5,7 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:4200vh;background:#F4F2EF;overscroll-behavior:contain}
+.stage{position:relative;height:4400vh;background:#F4F2EF;overscroll-behavior:contain}
 .stage-pin{
   position:sticky;top:0;
   height:100vh;height:100dvh;height:100svh;height:100lvh;
@@ -19,36 +19,36 @@ html{scroll-behavior:auto}
 }
 .stage-cream{
   position:absolute;inset:0;z-index:0;pointer-events:none;background:#F4F2EF;
-  transform:translate3d(0,calc((1 - var(--hc,var(--hw,var(--hp,0))))*148%),0);
+  transform:translate3d(0,calc((1 - var(--hc,var(--hw,var(--hp,0))))*152%),0);
   will-change:transform;
 }
 .stage-hero{
   position:absolute;inset:0;z-index:4;overflow:hidden;will-change:transform,mask-image,opacity;
   /* soft curtain wipe — --hw peels slightly ahead of type (--hp) */
   -webkit-mask-image:linear-gradient(
-    214deg,
+    216deg,
     #000 0%,
-    #000 calc((1 - var(--hw,var(--hp,0))) * 100% - 38vh),
-    rgba(0,0,0,.995) calc((1 - var(--hw,var(--hp,0))) * 100% - 11vh),
-    rgba(0,0,0,.8) calc((1 - var(--hw,var(--hp,0))) * 100% - 3vh),
-    rgba(0,0,0,.5) calc((1 - var(--hw,var(--hp,0))) * 100% + 4vh),
-    rgba(0,0,0,.22) calc((1 - var(--hw,var(--hp,0))) * 100% + 11vh),
-    rgba(0,0,0,.065) calc((1 - var(--hw,var(--hp,0))) * 100% + 18vh),
-    transparent calc((1 - var(--hw,var(--hp,0))) * 100% + 40vh)
+    #000 calc((1 - var(--hw,var(--hp,0))) * 100% - 40vh),
+    rgba(0,0,0,.996) calc((1 - var(--hw,var(--hp,0))) * 100% - 12vh),
+    rgba(0,0,0,.82) calc((1 - var(--hw,var(--hp,0))) * 100% - 4vh),
+    rgba(0,0,0,.52) calc((1 - var(--hw,var(--hp,0))) * 100% + 3vh),
+    rgba(0,0,0,.24) calc((1 - var(--hw,var(--hp,0))) * 100% + 10vh),
+    rgba(0,0,0,.07) calc((1 - var(--hw,var(--hp,0))) * 100% + 17vh),
+    transparent calc((1 - var(--hw,var(--hp,0))) * 100% + 42vh)
   );
   mask-image:linear-gradient(
-    214deg,
+    216deg,
     #000 0%,
-    #000 calc((1 - var(--hw,var(--hp,0))) * 100% - 38vh),
-    rgba(0,0,0,.995) calc((1 - var(--hw,var(--hp,0))) * 100% - 11vh),
-    rgba(0,0,0,.8) calc((1 - var(--hw,var(--hp,0))) * 100% - 3vh),
-    rgba(0,0,0,.5) calc((1 - var(--hw,var(--hp,0))) * 100% + 4vh),
-    rgba(0,0,0,.22) calc((1 - var(--hw,var(--hp,0))) * 100% + 11vh),
-    rgba(0,0,0,.065) calc((1 - var(--hw,var(--hp,0))) * 100% + 18vh),
-    transparent calc((1 - var(--hw,var(--hp,0))) * 100% + 40vh)
+    #000 calc((1 - var(--hw,var(--hp,0))) * 100% - 40vh),
+    rgba(0,0,0,.996) calc((1 - var(--hw,var(--hp,0))) * 100% - 12vh),
+    rgba(0,0,0,.82) calc((1 - var(--hw,var(--hp,0))) * 100% - 4vh),
+    rgba(0,0,0,.52) calc((1 - var(--hw,var(--hp,0))) * 100% + 3vh),
+    rgba(0,0,0,.24) calc((1 - var(--hw,var(--hp,0))) * 100% + 10vh),
+    rgba(0,0,0,.07) calc((1 - var(--hw,var(--hp,0))) * 100% + 17vh),
+    transparent calc((1 - var(--hw,var(--hp,0))) * 100% + 42vh)
   );
-  transform:translate3d(calc(var(--hw,var(--hp,0))*-4.4vw),calc(var(--hw,var(--hp,0))*-50vh),0) scale(calc(1 - var(--hw,var(--hp,0))*.175)) rotate(calc(var(--hw,var(--hp,0))*-0.95deg));
-  opacity:calc(1 - var(--hw,var(--hp,0))*0.16);
+  transform:translate3d(calc(var(--hw,var(--hp,0))*-4.6vw),calc(var(--hw,var(--hp,0))*-52vh),0) scale(calc(1 - var(--hw,var(--hp,0))*.18)) rotate(calc(var(--hw,var(--hp,0))*-1deg));
+  opacity:calc(1 - var(--hw,var(--hp,0))*0.14);
   pointer-events:auto;
 }
 .stage[data-phase="2"] .stage-hero{pointer-events:none}
@@ -122,31 +122,31 @@ html{scroll-behavior:auto}
 .stage-giant{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
   font-family:"Bodoni Moda",serif;color:#050505;line-height:.46;
-  letter-spacing:calc(-.114em + var(--sp,0)*.185em + var(--hold,0)*.13em + var(--cross,0)*.14em);
-  font-size:calc(47vw * var(--gs,1));
-  line-height:.43;
-  transform:perspective(520px) rotateX(calc(var(--depth,0)*-12deg)) translate3d(0,calc((1 - var(--hp,0))*54vh + var(--fp,0)*-3.6vh),0) scale(calc(.28 + var(--hp,0)*.72 + var(--hold,0)*.32 + var(--pop,0)*.32 + var(--cross,0)*.11));
+  letter-spacing:calc(-.116em + var(--sp,0)*.19em + var(--hold,0)*.14em + var(--cross,0)*.15em);
+  font-size:calc(48vw * var(--gs,1));
+  line-height:.42;
+  transform:perspective(480px) rotateX(calc(var(--depth,0)*-12.5deg)) translate3d(0,calc((1 - var(--hp,0))*50vh + var(--fp,0)*-3.8vh),0) scale(calc(.26 + var(--hp,0)*.74 + var(--hold,0)*.34 + var(--pop,0)*.34 + var(--cross,0)*.12));
   /* rise opacity faster mid-wipe so type reads under peeling hero */
-  opacity:min(1, calc(var(--hp,0) * 3.55 - var(--fp,0)*.01));
+  opacity:min(1, calc(var(--hp,0) * 3.7));
   user-select:none;pointer-events:none;text-align:center;
   text-shadow:
-    0 calc(2px + var(--cross,0)*26px) calc(34px + var(--depth,0)*52px) rgba(0,0,0,calc(.08 + var(--cross,0)*.26)),
-    calc(var(--cross,0)*-13px) calc(var(--cross,0)*10px) calc(24px + var(--cross,0)*32px) rgba(0,0,0,calc(var(--cross,0)*.17)),
-    calc(var(--cross,0)*12px) calc(var(--cross,0)*-6px) calc(20px + var(--cross,0)*24px) rgba(0,0,0,calc(var(--cross,0)*.11));
+    0 calc(2px + var(--cross,0)*28px) calc(36px + var(--depth,0)*56px) rgba(0,0,0,calc(.085 + var(--cross,0)*.28)),
+    calc(var(--cross,0)*-14px) calc(var(--cross,0)*11px) calc(26px + var(--cross,0)*34px) rgba(0,0,0,calc(var(--cross,0)*.18)),
+    calc(var(--cross,0)*13px) calc(var(--cross,0)*-6px) calc(22px + var(--cross,0)*26px) rgba(0,0,0,calc(var(--cross,0)*.12));
   /* quartic snap — clears even earlier midwipe */
-  filter:contrast(1.5) blur(calc((1 - var(--hp,0)) * (1 - var(--hp,0)) * (1 - var(--hp,0)) * (1 - var(--hp,0)) * 10px));
+  filter:contrast(1.52) blur(calc((1 - var(--hp,0)) * (1 - var(--hp,0)) * (1 - var(--hp,0)) * (1 - var(--hp,0)) * 9px));
   will-change:transform,opacity,letter-spacing,filter;
   transform-style:preserve-3d;
 }
 .stage-giant span{display:block;white-space:nowrap;will-change:transform,opacity}
 /* line stagger on reveal; stay centered while early cards cross; split via --sp */
 .stage-giant .g1{
-  transform:translate3d(calc(var(--sp,0)*-56vw), calc((1 - var(--hp,0))*5vh), 0);
-  opacity:calc(0.48 + var(--hp,0)*.52);
+  transform:translate3d(calc(var(--sp,0)*-58vw), calc((1 - var(--hp,0))*4vh), 0);
+  opacity:calc(0.46 + var(--hp,0)*.54);
 }
 .stage-giant .g2{
-  transform:translate3d(calc(var(--sp,0)*56vw), calc((1 - var(--hp2,0))*10vh), 0);
-  opacity:calc(0.28 + var(--hp2,0)*.72);
+  transform:translate3d(calc(var(--sp,0)*58vw), calc((1 - var(--hp2,0))*9vh), 0);
+  opacity:calc(0.26 + var(--hp2,0)*.74);
   margin-top:0;
 }
 .stage-veil{
@@ -163,9 +163,9 @@ html{scroll-behavior:auto}
 }
 .stage-floats .track{
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
-  gap:clamp(10px,2.2vw,42px);padding-left:80vw;padding-right:90vw;will-change:transform,filter;
+  gap:clamp(8px,2vw,40px);padding-left:82vw;padding-right:92vw;will-change:transform,filter;
   transform-style:preserve-3d;
-  filter:blur(calc(var(--scrub,0)*0.35px));
+  filter:blur(calc(var(--scrub,0)*0.28px));
 }
 .float-card{
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
@@ -173,10 +173,10 @@ html{scroll-behavior:auto}
   transform-origin:50% 62%;
   transform:
     translate3d(0, calc(var(--bob,0)*1px - var(--lift,0)*1px + var(--rowy,0)*1px), var(--z,0px))
-    rotate(calc(var(--r) * (1.42 + var(--punch,0)*.62) + var(--spin,0deg) + var(--tilt,0deg) + var(--lean,0deg)))
+    rotate(calc(var(--r) * (1.46 + var(--punch,0)*.66) + var(--spin,0deg) + var(--tilt,0deg) + var(--lean,0deg)))
     rotateY(var(--ry,0deg))
     rotateX(var(--rx,0deg))
-    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.56)));
+    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.6)));
   background:#fff;border-radius:12px;
   box-shadow:
     calc(var(--shx,0)*1px) calc(18px + var(--prox,0)*42px + var(--punch,0)*18px) calc(46px + var(--prox,0)*62px) rgba(0,0,0,calc(.17 + var(--prox,0)*.32 + var(--punch,0)*.15)),
@@ -282,9 +282,9 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:3300vh}
+  .stage{height:3450vh}
   .float-card{width:74vw}
-  .stage-giant{font-size:42vw}
+  .stage-giant{font-size:43vw}
   .stage-floats{-webkit-mask-image:none;mask-image:none}
   .stage-floats .track{padding-left:106vw;gap:36px;filter:none}
   .stage-progress{display:none}
