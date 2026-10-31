@@ -66,49 +66,58 @@
   */
   function targets(){
     const y=scrollY,vh=innerHeight;
-    let p0=0,hp=0,fp=0,gs=1,phase='0',onHero=false;
+    let p0=0,hp=0,fp=0,gs=1,phase='0',onHero=false,p=0;
     if(stage && !reduce){
       const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-vh);
-      const p=clamp((y-top)/len);
-      p0=easeOut(clamp(p/0.06));
-      hp=easeInOut(clamp((p-0.04)/0.30));
-      /* longer hold on giant type before cards enter */
-      fp=easeOut(clamp((p-0.36)/0.64));
-      gs=1-fp*0.28;
-      phase=p<0.06?'0':(p<0.38?'1':'2');
-      onHero=hp<0.55;
+      p=clamp((y-top)/len);
+      p0=easeOut(clamp(p/0.055));
+      hp=easeInOut(clamp((p-0.035)/0.30));
+      /* hold centered giant type, then cards cross and split lines */
+      fp=easeOut(clamp((p-0.38)/0.62));
+      gs=1-fp*0.3;
+      phase=p<0.055?'0':(p<0.40?'1':'2');
+      onHero=hp<0.52;
     }
-    return {y,vh,p0,hp,fp,gs,phase,onHero};
+    return {y,vh,p0,hp,fp,gs,phase,onHero,p};
   }
 
-  let vel=0, spin=0;
+  let vel=0, spin=0, lastT=performance.now();
+  function expAlpha(lambda,dt){return 1-Math.exp(-lambda*dt);}
   function apply(t,hard){
     if(stage && !reduce){
-      /* critically-damped-ish lerp + velocity catch-up */
+      const now=performance.now();
+      const dt=Math.min(0.05, Math.max(0.008, (now-lastT)/1000));
+      lastT=now;
+      /* frame-rate independent exponential lerp */
       const dy=t.y-lastY;
-      const speed=Math.min(2.2, Math.abs(dy)/22);
-      vel=lerp(vel,speed,hard?1:0.18);
-      spin=lerp(spin, Math.max(-1.2, Math.min(1.2, dy/40)), hard?1:0.12);
-      const boost=1+vel*0.65;
-      const aHp=hard?1:Math.min(0.14, 0.058*boost);
-      const aFp=hard?1:Math.min(0.12, 0.048*boost);
-      smooth.p0=lerp(smooth.p0,t.p0,hard?1:Math.min(0.16,0.09*boost));
+      const speed=Math.min(2.4, Math.abs(dy)/20);
+      vel=lerp(vel,speed,hard?1:expAlpha(8,dt));
+      spin=lerp(spin, Math.max(-1.4, Math.min(1.4, dy/36)), hard?1:expAlpha(6,dt));
+      const boost=1+vel*0.7;
+      const aHp=hard?1:expAlpha(5.2*boost,dt);
+      const aFp=hard?1:expAlpha(4.4*boost,dt);
+      smooth.p0=lerp(smooth.p0,t.p0,hard?1:expAlpha(7*boost,dt));
       smooth.hp=lerp(smooth.hp,t.hp,aHp);
       smooth.fp=lerp(smooth.fp,t.fp,aFp);
-      smooth.gs=lerp(smooth.gs,t.gs,hard?1:0.08);
+      smooth.gs=lerp(smooth.gs,t.gs,hard?1:expAlpha(6,dt));
       stage.style.setProperty('--p0',smooth.p0.toFixed(4));
       stage.style.setProperty('--hp',smooth.hp.toFixed(4));
       stage.style.setProperty('--fp',smooth.fp.toFixed(4));
       stage.style.setProperty('--gs',smooth.gs.toFixed(4));
+      stage.style.setProperty('--p',(t.p||0).toFixed(4));
       stage.dataset.phase=t.phase;
       if(track){
-        const dist=Math.max(track.scrollWidth-innerWidth*0.15,1);
+        const dist=Math.max(track.scrollWidth-innerWidth*0.12,1);
         track.style.transform=`translate3d(${(-smooth.fp*dist).toFixed(2)}px,0,0)`;
+        const mid=innerWidth*0.5;
         [...track.children].forEach((c,i)=>{
-          const bob=Math.sin(smooth.fp*7.6+i*1.15)*58*(0.35+0.65*Math.abs(Math.sin(i*1.4)));
-          const scale=1+Math.sin(smooth.fp*3.6+i*0.85)*0.06;
-          const z=(Math.sin(smooth.fp*2.4+i)*22).toFixed(1)+'px';
-          const sp=(spin*(i%2===0?1:-1)*2.4).toFixed(2)+'deg';
+          const r=c.getBoundingClientRect();
+          const cx=r.left+r.width*0.5;
+          const prox=1-Math.min(1, Math.abs(cx-mid)/(innerWidth*0.55));
+          const bob=Math.sin(smooth.fp*7.8+i*1.2)*62*(0.3+0.7*Math.abs(Math.sin(i*1.45)));
+          const scale=0.94+prox*0.12+Math.sin(smooth.fp*3.8+i*0.9)*0.03;
+          const z=(prox*36+Math.sin(smooth.fp*2.5+i)*10).toFixed(1)+'px';
+          const sp=(spin*(i%2===0?1:-1)*2.8).toFixed(2)+'deg';
           c.style.setProperty('--bob',bob.toFixed(2));
           c.style.setProperty('--fs',scale.toFixed(3));
           c.style.setProperty('--z',z);
@@ -160,7 +169,7 @@
   function goShot(name){
     if(!stage||reduce)return;
     const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-innerHeight);
-    const map={hero:0.02,wipe:0.28,midwipe:0.14,stage1:0.28,cards:0.54,stage2:0.54,stage0:0.02,stage3:0.88};
+    const map={hero:0.02,wipe:0.30,midwipe:0.13,stage1:0.30,cards:0.52,stage2:0.52,stage0:0.02,stage3:0.90};
     const p=map[name];
     if(p==null)return;
     scrollTo(0, top+len*p);
