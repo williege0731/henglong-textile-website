@@ -8,7 +8,7 @@
 
   const stage=document.querySelector('[data-stage]');
   let track=null;
-  const smooth={p0:0,hp:0,hp2:0,hpMid:0,fp:0,sp:0,gs:1,hold:0,pop:0,cross:0,scrub:0,ps:0,depth:0};
+  const smooth={p0:0,hp:0,hp2:0,hpMid:0,hw:0,fp:0,sp:0,gs:1,hold:0,pop:0,cross:0,scrub:0,ps:0,depth:0,fpVis:0};
   if(stage && !reduce){
     const floats=stage.querySelector('.stage-floats');
     if(floats && !floats.querySelector('.track')){
@@ -61,9 +61,9 @@
 
   /* Progress map (of stage scroll 0..1):
      0–0.04  hero settle (p0)
-     0.02–0.22 soft wipe + giant rise (hp); g2 lags as hp2
-     0.22–0.48 type hold / breath / pop settle
-     0.46–1.0  cards scrub; type split lags via sp
+     0.02–0.24 soft wipe (--hw ahead) + giant rise (hp); g2 lags
+     0.24–0.50 type hold / breath / pop settle
+     0.48–1.0  cards scrub; type split lags via sp
   */
   function targets(){
     const y=scrollY,vh=innerHeight;
@@ -71,14 +71,14 @@
     if(stage && !reduce){
       const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-vh);
       p=clamp((y-top)/len);
-      p0=easeOut(clamp(p/0.028));
-      hp=easeInOut(clamp((p-0.01)/0.21));
+      p0=easeOut(clamp(p/0.026));
+      hp=easeInOut(clamp((p-0.012)/0.22));
       /* longer hold; crawl then glide across type */
-      const raw=clamp((p-0.46)/0.54);
-      fp=Math.pow(easeInOut(raw), 0.76);
-      sp=Math.pow(clamp((fp-0.3)/0.7), 1.42);
-      gs=1-fp*0.22;
-      phase=p<0.03?'0':(p<0.48?'1':'2');
+      const raw=clamp((p-0.48)/0.52);
+      fp=Math.pow(easeInOut(raw), 0.74);
+      sp=Math.pow(clamp((fp-0.32)/0.68), 1.45);
+      gs=1-fp*0.24;
+      phase=p<0.03?'0':(p<0.50?'1':'2');
       onHero=hp<0.56;
     }
     return {y,vh,p0,hp,fp,sp,gs,phase,onHero,p};
@@ -89,7 +89,7 @@
   const spring={fp:0,v:0,sp:0,sv:0}; /* critically-damped-ish scrub */
   function expAlpha(lambda,dt){return 1-Math.exp(-lambda*dt);}
   function springStep(x, v, target, dt, omega){
-    const zeta=1.22, w=omega;
+    const zeta=1.08, w=omega; /* near-critical — tiny cream overshoot */
     const a=-2*zeta*w*v - w*w*(x-target);
     const nv=v+a*dt;
     return {x:x+nv*dt, v:nv};
@@ -103,25 +103,27 @@
       const speed=Math.min(2.8, Math.abs(dy)/16);
       vel=lerp(vel,speed,hard?1:expAlpha(5.8,dt));
       spin=lerp(spin, Math.max(-1.7, Math.min(1.7, dy/30)), hard?1:expAlpha(4.2,dt));
-      coast=hard?0:lerp(coast + dy*0.00022, 0, expAlpha(1.4,dt));
-      const boost=1+vel*0.28;
-      const look=hard?0:Math.max(-0.055, Math.min(0.055, (dy/650)*0.032));
-      smooth.p0=lerp(smooth.p0,t.p0,hard?1:expAlpha(7.6*boost,dt));
-      /* dual-stage wipe for creamier curtain */
-      smooth.hpMid=lerp(smooth.hpMid,t.hp,hard?1:expAlpha(5.8*boost,dt));
-      smooth.hp=lerp(smooth.hp,smooth.hpMid,hard?1:expAlpha(4.5*boost,dt));
+      coast=hard?0:lerp(coast + dy*0.00026, 0, expAlpha(1.25,dt));
+      const boost=1+vel*0.26;
+      const look=hard?0:Math.max(-0.06, Math.min(0.06, (dy/600)*0.036));
+      smooth.p0=lerp(smooth.p0,t.p0,hard?1:expAlpha(7.2*boost,dt));
+      /* dual-stage wipe; --hw leads type for peel-ahead curtain */
+      smooth.hpMid=lerp(smooth.hpMid,t.hp,hard?1:expAlpha(5.4*boost,dt));
+      smooth.hp=lerp(smooth.hp,smooth.hpMid,hard?1:expAlpha(4.1*boost,dt));
+      smooth.hw=lerp(smooth.hw, clamp(t.hp*1.08), hard?1:expAlpha(6.2*boost,dt));
       /* second line lags first for staggered reveal */
-      smooth.hp2=lerp(smooth.hp2, clamp((t.hp-0.18)/0.82), hard?1:expAlpha(3.4*boost,dt));
-      /* look-ahead creamier spring scrub (softer ω) */
-      if(hard){spring.fp=t.fp;spring.v=0;spring.sp=t.sp;spring.sv=0;}
+      smooth.hp2=lerp(smooth.hp2, clamp((t.hp-0.2)/0.8), hard?1:expAlpha(3.1*boost,dt));
+      /* look-ahead creamier spring scrub (softer ω) + display lerp */
+      if(hard){spring.fp=t.fp;spring.v=0;spring.sp=t.sp;spring.sv=0;smooth.fpVis=t.fp;}
       else{
-        const s1=springStep(spring.fp, spring.v, clamp(t.fp + coast + look), dt, 2.7*boost);
+        const s1=springStep(spring.fp, spring.v, clamp(t.fp + coast + look), dt, 2.45*boost);
         spring.fp=s1.x; spring.v=s1.v;
-        const s2=springStep(spring.sp, spring.sv, t.sp, dt, 2.15*boost);
+        const s2=springStep(spring.sp, spring.sv, t.sp, dt, 1.95*boost);
         spring.sp=s2.x; spring.sv=s2.v;
       }
       smooth.fp=spring.fp;
       smooth.sp=spring.sp;
+      smooth.fpVis=hard?spring.fp:lerp(smooth.fpVis, spring.fp, expAlpha(9.5*boost,dt));
       smooth.gs=lerp(smooth.gs,t.gs,hard?1:expAlpha(4.4,dt));
       smooth.ps=lerp(smooth.ps,t.p||0,hard?1:expAlpha(3.8*boost,dt));
       const impulse=hard?0:Math.max(-0.028, Math.min(0.028, dy/1200));
@@ -141,6 +143,7 @@
       stage.style.setProperty('--p0',smooth.p0.toFixed(4));
       stage.style.setProperty('--hp',hpV.toFixed(4));
       stage.style.setProperty('--hp2',hp2V.toFixed(4));
+      stage.style.setProperty('--hw',clamp(smooth.hw+over.hp*0.6).toFixed(4));
       stage.style.setProperty('--fp',fpV.toFixed(4));
       stage.style.setProperty('--sp',spV.toFixed(4));
       stage.style.setProperty('--gs',smooth.gs.toFixed(4));
@@ -156,7 +159,8 @@
       stage.dataset.phase=t.phase;
       if(track){
         const dist=Math.max(track.scrollWidth-innerWidth*0.05,1);
-        track.style.transform=`translate3d(${(-fpV*dist).toFixed(2)}px,0,0)`;
+        const fpDraw=clamp(smooth.fpVis+over.fp);
+        track.style.transform=`translate3d(${(-fpDraw*dist).toFixed(2)}px,0,0)`;
         const mid=innerWidth*0.5;
         let crossSum=0, crossN=0;
         [...track.children].forEach((c,i)=>{
@@ -174,13 +178,13 @@
           const scale=0.86+prox*0.24+Math.sin(fpV*2.9+i)*0.018;
           const z=(prox*110+(i%2===0?18:-16)+Math.sin(fpV*2.1+i)*18).toFixed(1)+'px';
           const spn=(spin*(i%2===0?1:-1)*5.8).toFixed(2)+'deg';
-          const tilt=(nx*-16).toFixed(2)+'deg';
-          const ry=(nx*-30 - spin*4.4).toFixed(2)+'deg';
-          const rx=(prox*-8 + Math.sin(fpV*1.9+i)*2.1).toFixed(2)+'deg';
+          const tilt=(nx*-18).toFixed(2)+'deg';
+          const ry=(nx*-34 - spin*5.0).toFixed(2)+'deg';
+          const rx=(prox*-9.5 + Math.sin(fpV*1.9+i)*2.4).toFixed(2)+'deg';
           const row=parseFloat(c.dataset.row||'0')||0;
           /* high/low corridor opens as scrub progresses — type peeks mid-band */
           const rowDir=row?1:-1;
-          const rowy=rowDir*(18 + fpV*58 + punch*36)*-1;
+          const rowy=rowDir*(22 + fpV*72 + punch*48)*-1;
           c.style.setProperty('--bob',bob.toFixed(2));
           c.style.setProperty('--rowy',rowy.toFixed(2));
           c.style.setProperty('--lift',lift.toFixed(2));
@@ -244,7 +248,7 @@
   function goShot(name){
     if(!stage||reduce)return;
     const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-innerHeight);
-    const map={hero:0.02,wipe:0.26,midwipe:0.08,peek:0.48,stage1:0.26,cards:0.68,stage2:0.68,stage0:0.02,stage3:0.94};
+    const map={hero:0.02,wipe:0.28,midwipe:0.09,peek:0.50,stage1:0.28,cards:0.70,stage2:0.70,stage0:0.02,stage3:0.94};
     const p=map[name];
     if(p==null)return;
     scrollTo(0, top+len*p);
