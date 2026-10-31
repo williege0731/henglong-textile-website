@@ -5,7 +5,7 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:1360vh;background:#F4F2EF;overscroll-behavior:contain}
+.stage{position:relative;height:1420vh;background:#F4F2EF;overscroll-behavior:contain}
 .stage-pin{
   position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;
   isolation:isolate;background:#F4F2EF;
@@ -16,27 +16,30 @@ html{scroll-behavior:auto}
 }
 .stage-cream{
   position:absolute;inset:0;z-index:0;pointer-events:none;background:#F4F2EF;
-  transform:translate3d(0,calc((1 - var(--hp,0))*100%),0);
+  transform:translate3d(0,calc((1 - var(--hp,0))*102%),0);
   will-change:transform;
 }
 .stage-hero{
-  position:absolute;inset:0;z-index:4;overflow:hidden;will-change:transform,mask-image;
+  position:absolute;inset:0;z-index:4;overflow:hidden;will-change:transform,mask-image,opacity;
   /* soft curtain wipe — cream bed rises underneath */
   -webkit-mask-image:linear-gradient(
     to bottom,
     #000 0%,
-    #000 calc((1 - var(--hp,0)) * 100% - 9vh),
-    rgba(0,0,0,.7) calc((1 - var(--hp,0)) * 100% - 2.2vh),
-    transparent calc((1 - var(--hp,0)) * 100% + 5.5vh)
+    #000 calc((1 - var(--hp,0)) * 100% - 10vh),
+    rgba(0,0,0,.82) calc((1 - var(--hp,0)) * 100% - 1.5vh),
+    rgba(0,0,0,.28) calc((1 - var(--hp,0)) * 100% + 2.8vh),
+    transparent calc((1 - var(--hp,0)) * 100% + 7vh)
   );
   mask-image:linear-gradient(
     to bottom,
     #000 0%,
-    #000 calc((1 - var(--hp,0)) * 100% - 9vh),
-    rgba(0,0,0,.7) calc((1 - var(--hp,0)) * 100% - 2.2vh),
-    transparent calc((1 - var(--hp,0)) * 100% + 5.5vh)
+    #000 calc((1 - var(--hp,0)) * 100% - 10vh),
+    rgba(0,0,0,.82) calc((1 - var(--hp,0)) * 100% - 1.5vh),
+    rgba(0,0,0,.28) calc((1 - var(--hp,0)) * 100% + 2.8vh),
+    transparent calc((1 - var(--hp,0)) * 100% + 7vh)
   );
-  transform:translate3d(0,calc(var(--hp,0)*-22vh),0) scale(calc(1 - var(--hp,0)*.085));
+  transform:translate3d(0,calc(var(--hp,0)*-24vh),0) scale(calc(1 - var(--hp,0)*.09));
+  opacity:calc(1 - var(--hp,0)*0.08);
   pointer-events:auto;
 }
 .stage[data-phase="2"] .stage-hero{pointer-events:none}
@@ -109,19 +112,26 @@ html{scroll-behavior:auto}
 /* giant type behind floats — fully revealed after wipe */
 .stage-giant{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.58;
-  letter-spacing:calc(-.062em + var(--sp,0)*.1em + var(--hold,0)*.014em);
-  font-size:calc(29vw * var(--gs,1));
-  transform:translate3d(0,calc((1 - var(--hp,0))*58vh + var(--fp,0)*-1.2vh),0) scale(calc(.68 + var(--hp,0)*.32 + var(--hold,0)*.04 + var(--pop,0)*.04));
-  opacity:calc(var(--hp,0) * (1.05 - var(--fp,0)*.03));
+  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.56;
+  letter-spacing:calc(-.066em + var(--sp,0)*.09em + var(--hold,0)*.016em + var(--cross,0)*.02em);
+  font-size:calc(30vw * var(--gs,1));
+  transform:translate3d(0,calc((1 - var(--hp,0))*60vh + var(--fp,0)*-1vh),0) scale(calc(.66 + var(--hp,0)*.34 + var(--hold,0)*.045 + var(--pop,0)*.05));
+  opacity:calc(var(--hp,0) * (1.06 - var(--fp,0)*.025));
   user-select:none;pointer-events:none;text-align:center;
-  filter:contrast(1.14) blur(calc((1 - var(--hp,0)) * 9px));
+  filter:contrast(1.15) blur(calc((1 - var(--hp,0)) * 10px));
   will-change:transform,opacity,letter-spacing,filter;
 }
-.stage-giant span{display:block;white-space:nowrap}
-/* stay centered while early cards cross; split later via --sp */
-.stage-giant .g1{transform:translateX(calc(var(--sp,0)*-36vw))}
-.stage-giant .g2{transform:translateX(calc(var(--sp,0)*36vw));margin-top:.0em}
+.stage-giant span{display:block;white-space:nowrap;will-change:transform,opacity}
+/* line stagger on reveal; stay centered while early cards cross; split via --sp */
+.stage-giant .g1{
+  transform:translate3d(calc(var(--sp,0)*-34vw), calc((1 - var(--hp,0))*6vh), 0);
+  opacity:calc(0.35 + var(--hp,0)*.65);
+}
+.stage-giant .g2{
+  transform:translate3d(calc(var(--sp,0)*34vw), calc((1 - var(--hp2,0))*10vh), 0);
+  opacity:calc(0.2 + var(--hp2,0)*.8);
+  margin-top:0;
+}
 .stage-veil{
   position:absolute;inset:0;z-index:2;pointer-events:none;
   background:radial-gradient(ellipse at 50% 48%,transparent 18%,rgba(244,242,239,.28) 62%,rgba(244,242,239,.55) 100%);
@@ -129,27 +139,28 @@ html{scroll-behavior:auto}
 }
 
 /* floating tilted polaroid cards crossing type */
-.stage-floats{position:absolute;inset:0;z-index:3;pointer-events:none;perspective:2400px}
+.stage-floats{position:absolute;inset:0;z-index:3;pointer-events:none;perspective:2600px}
 .stage-floats .track{
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
-  gap:clamp(58px,6.8vw,120px);padding-left:78vw;padding-right:78vw;will-change:transform;
-  transform-style:preserve-3d
+  gap:clamp(62px,7.2vw,128px);padding-left:82vw;padding-right:82vw;will-change:transform,filter;
+  transform-style:preserve-3d;
+  filter:blur(calc(var(--scrub,0)*1.1px));
 }
 .float-card{
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
-  width:clamp(160px,15.4vw,234px);margin-top:var(--t);
+  width:clamp(164px,15.8vw,240px);margin-top:var(--t);
   transform:
     translate3d(0, calc(var(--bob,0)*1px - var(--lift,0)*1px), var(--z,0px))
     rotateY(var(--ry,0deg))
     rotateX(var(--rx,0deg))
     rotate(calc(var(--r) + var(--spin,0deg) + var(--tilt,0deg)))
-    scale(calc(var(--fs,1) * var(--enter,1)));
+    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.08)));
   background:#fff;border-radius:12px;
   box-shadow:
-    0 calc(20px + var(--prox,0)*28px) calc(48px + var(--prox,0)*44px) rgba(0,0,0,calc(.16 + var(--prox,0)*.24)),
-    0 1px 0 rgba(255,255,255,.7) inset;
+    0 calc(18px + var(--prox,0)*32px + var(--punch,0)*10px) calc(44px + var(--prox,0)*50px) rgba(0,0,0,calc(.15 + var(--prox,0)*.26 + var(--punch,0)*.08)),
+    0 1px 0 rgba(255,255,255,.72) inset;
   color:#1A1A1A;
-  transition:box-shadow .3s;
+  transition:box-shadow .28s;
   /* solid polaroids — type peeks in mid-band between high/low cards */
   opacity:calc(var(--hp,0) * var(--vis,1));
   will-change:transform,opacity,box-shadow;
@@ -242,10 +253,10 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:1040vh}
-  .float-card{width:66vw}
-  .stage-giant{font-size:30vw}
-  .stage-floats .track{padding-left:100vw;gap:28px}
+  .stage{height:1100vh}
+  .float-card{width:68vw}
+  .stage-giant{font-size:31vw}
+  .stage-floats .track{padding-left:102vw;gap:30px;filter:none}
   .stage-progress{display:none}
   .fabric-grid.is-list .fabric-card{grid-template-columns:96px 1fr;gap:14px}
 }
