@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>联系我们 — 恒隆纺织 · 色织图鉴</title>
+  <meta name="description" content="联系南通开发区恒隆纺织有限公司，沟通色织面料需求与样布确认。" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="site-nav" aria-label="主导航">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">恒隆纺织<span>HENGLONG · YARN-DYED</span></a>
+      <button class="nav-toggle" type="button" aria-label="菜单" aria-expanded="false">☰</button>
+      <div class="nav-links">
+        <a href="index.html">色织图鉴</a>
+        <a href="about.html">关于我们</a>
+        <a href="products.html">产品与服务</a>
+        <a href="contact.html" class="active">联系我们</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <header class="page-banner reveal">
+      <p class="kicker">Contact</p>
+      <h1>联系我们</h1>
+      <p>告诉我们用途、参考样或大致规格。下方表单仅作本地留言提示；正式商务沟通请通过电话或邮件获取最新联络方式。</p>
+    </header>
+
+    <section class="contact-shell">
+      <div class="contact-visual">
+        <div class="photo">
+          <img src="images/web/contact.jpg" alt="色织格纹布面特写作为联系页视觉" />
+        </div>
+      </div>
+      <div class="contact-panel reveal">
+        <h2>恒隆纺织</h2>
+        <p class="hint">南通开发区恒隆纺织有限公司 · 色织布工厂</p>
+        <dl class="info-list">
+          <div><dt>公司</dt><dd>南通开发区恒隆纺织有限公司</dd></div>
+          <div><dt>类型</dt><dd>色织布工厂 · 纱线先染后织</dd></div>
+          <div><dt>地区</dt><dd>江苏省南通市经济技术开发区</dd></div>
+          <div><dt>业务</dt><dd>色织面料织造、配色沟通、试织与批量交付协作</dd></div>
+          <div><dt>对接</dt><dd>请通过电话或邮件获取最新号码与收件地址；亦可先留下需求摘要。</dd></div>
+        </dl>
+
+        <form id="contact-form" action="#" method="post">
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">称呼 *</label>
+              <input id="name" name="name" type="text" required placeholder="姓名或公司称呼" autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="company">公司 / 品牌</label>
+              <input id="company" name="company" type="text" placeholder="选填" autocomplete="organization" />
+            </div>
+            <div class="field">
+              <label for="phone">电话 *</label>
+              <input id="phone" name="phone" type="tel" required placeholder="便于回拨的号码" autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for="email">邮箱</label>
+              <input id="email" name="email" type="email" placeholder="选填" autocomplete="email" />
+            </div>
+            <div class="field full">
+              <label for="interest">意向方向</label>
+              <select id="interest" name="interest">
+                <option value="">请选择（选填）</option>
+                <option>色织条格</option>
+                <option>素色色织</option>
+                <option>衬衫用途面料</option>
+                <option>家纺相关色织</option>
+                <option>来样开发沟通</option>
+                <option>其他 / 尚不确定</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="message">需求说明 *</label>
+              <textarea id="message" name="message" required placeholder="例如：用途、大致幅宽/克重、是否有来样、期望沟通时间"></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn" type="submit">提交留言</button>
+            <span id="form-status" class="form-status" role="status"></span>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <div class="brand">恒隆纺织<small>NANTONG · YARN-DYED</small></div>
+        <p>南通开发区恒隆纺织有限公司<br />色织布工厂</p>
+        <div class="footer-swatches">
+          <span class="swatch"><img src="images/web/swatch-1.jpg" alt="" /></span>
+          <span class="swatch"><img src="images/web/swatch-2.jpg" alt="" /></span>
+          <span class="swatch"><img src="images/web/swatch-3.jpg" alt="" /></span>
+          <span class="swatch"><img src="images/web/swatch-4.jpg" alt="" /></span>
+          <span class="swatch"><img src="images/web/swatch-5.jpg" alt="" /></span>
+        </div>
+      </div>
+      <div>
+        <h4>浏览</h4>
+        <a href="index.html">色织图鉴</a>
+        <a href="about.html">关于我们</a>
+        <a href="products.html">产品与服务</a>
+        <a href="contact.html">联系我们</a>
+      </div>
+      <div>
+        <h4>品类</h4>
+        <li>色织条格</li>
+        <li>素色色织</li>
+        <li>衬衫 / 家纺用途</li>
+      </div>
+      <div>
+        <h4>所在地</h4>
+        <li>江苏省南通市</li>
+        <li>经济技术开发区</li>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 南通开发区恒隆纺织有限公司</span>
+      <span>色织图鉴 · LOOKBOOK</span>
+    </div>
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>
