@@ -5,11 +5,11 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:2080vh;background:#F4F2EF;overscroll-behavior:contain}
+.stage{position:relative;height:2200vh;background:#F4F2EF;overscroll-behavior:contain}
 .stage-pin{
   position:sticky;top:0;
-  height:100vh;height:100dvh;height:100svh;
-  min-height:100vh;min-height:100dvh;min-height:100svh;
+  height:100vh;height:100dvh;height:100svh;height:100lvh;
+  min-height:100vh;min-height:100dvh;min-height:100svh;min-height:100lvh;
   overflow:hidden;isolation:isolate;background:#F4F2EF;
   /* fully locked full-screen pin — no scale drift */
   transform:translateZ(0);
@@ -19,7 +19,7 @@ html{scroll-behavior:auto}
 }
 .stage-cream{
   position:absolute;inset:0;z-index:0;pointer-events:none;background:#F4F2EF;
-  transform:translate3d(0,calc((1 - var(--hw,var(--hp,0)))*116%),0);
+  transform:translate3d(0,calc((1 - var(--hw,var(--hp,0))*0.97)*118%),0);
   will-change:transform;
 }
 .stage-hero{
@@ -41,8 +41,8 @@ html{scroll-behavior:auto}
     rgba(0,0,0,.32) calc((1 - var(--hw,var(--hp,0))) * 100% + 5vh),
     transparent calc((1 - var(--hw,var(--hp,0))) * 100% + 13.5vh)
   );
-  transform:translate3d(calc(var(--hw,var(--hp,0))*-3vw),calc(var(--hw,var(--hp,0))*-38vh),0) scale(calc(1 - var(--hw,var(--hp,0))*.16));
-  opacity:calc(1 - var(--hw,var(--hp,0))*0.7);
+  transform:translate3d(calc(var(--hw,var(--hp,0))*-3.2vw),calc(var(--hw,var(--hp,0))*-40vh),0) scale(calc(1 - var(--hw,var(--hp,0))*.17)) rotate(calc(var(--hw,var(--hp,0))*-0.6deg));
+  opacity:calc(1 - var(--hw,var(--hp,0))*0.78);
   pointer-events:auto;
 }
 .stage[data-phase="2"] .stage-hero{pointer-events:none}
@@ -115,12 +115,12 @@ html{scroll-behavior:auto}
 /* giant type behind floats — fully revealed after wipe */
 .stage-giant{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:"Bodoni Moda",serif;color:#0e0e0e;line-height:.505;
-  letter-spacing:calc(-.086em + var(--sp,0)*.11em + var(--hold,0)*.04em + var(--cross,0)*.048em);
-  font-size:calc(36.5vw * var(--gs,1));
-  transform:perspective(960px) rotateX(calc(var(--depth,0)*-5deg)) translate3d(0,calc((1 - var(--hp,0))*76vh + var(--fp,0)*-1vh),0) scale(calc(.48 + var(--hp,0)*.52 + var(--hold,0)*.1 + var(--pop,0)*.1));
+  font-family:"Bodoni Moda",serif;color:#0c0c0c;line-height:.5;
+  letter-spacing:calc(-.09em + var(--sp,0)*.12em + var(--hold,0)*.045em + var(--cross,0)*.055em);
+  font-size:calc(37vw * var(--gs,1));
+  transform:perspective(920px) rotateX(calc(var(--depth,0)*-5.6deg)) translate3d(0,calc((1 - var(--hp,0))*78vh + var(--fp,0)*-1.1vh),0) scale(calc(.46 + var(--hp,0)*.54 + var(--hold,0)*.11 + var(--pop,0)*.11 + var(--cross,0)*.02));
   /* rise opacity faster mid-wipe so type reads under peeling hero */
-  opacity:min(1, calc(var(--hp,0) * 1.7 - var(--fp,0)*.04));
+  opacity:min(1, calc(var(--hp,0) * 1.8 - var(--fp,0)*.05));
   user-select:none;pointer-events:none;text-align:center;
   /* quartic snap — clears even earlier midwipe */
   filter:contrast(1.32) blur(calc((1 - var(--hp,0)) * (1 - var(--hp,0)) * (1 - var(--hp,0)) * (1 - var(--hp,0)) * 26px));
@@ -152,9 +152,9 @@ html{scroll-behavior:auto}
 }
 .stage-floats .track{
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
-  gap:clamp(34px,4.6vw,82px);padding-left:78vw;padding-right:86vw;will-change:transform,filter;
+  gap:clamp(32px,4.4vw,78px);padding-left:74vw;padding-right:84vw;will-change:transform,filter;
   transform-style:preserve-3d;
-  filter:blur(calc(var(--scrub,0)*1.7px));
+  filter:blur(calc(var(--scrub,0)*1.85px));
 }
 .float-card{
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
@@ -173,7 +173,9 @@ html{scroll-behavior:auto}
   transition:box-shadow .26s;
   /* solid polaroids — type peeks in mid-band between high/low cards */
   opacity:calc(var(--hp,0) * var(--vis,1));
-  will-change:transform,opacity,box-shadow;
+  z-index:calc(1 + var(--zi,0));
+  filter:brightness(calc(0.94 + var(--punch,0)*.12 + var(--prox,0)*.06));
+  will-change:transform,opacity,box-shadow,filter;
   backface-visibility:hidden;
   transform-style:preserve-3d;
 }
@@ -268,7 +270,7 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:1680vh}
+  .stage{height:1780vh}
   .float-card{width:74vw}
   .stage-giant{font-size:34vw}
   .stage-floats{-webkit-mask-image:none;mask-image:none}
