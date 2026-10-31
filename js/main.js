@@ -1,51 +1,58 @@
 (function () {
-  document.documentElement.classList.add("js");
+  const header = document.querySelector(".site-header");
+  const menuBtn = document.querySelector("[data-menu-open]");
+  const closeBtn = document.querySelector("[data-menu-close]");
+  const drawer = document.querySelector(".nav-drawer");
+  const overlay = document.querySelector(".nav-overlay");
 
-  var toggle = document.querySelector(".nav-toggle");
-  var links = document.querySelector(".nav-links");
-  if (toggle && links) {
-    toggle.addEventListener("click", function () {
-      links.classList.toggle("open");
-      toggle.setAttribute(
-        "aria-expanded",
-        links.classList.contains("open") ? "true" : "false"
-      );
-    });
+  function openMenu() {
+    drawer && drawer.classList.add("open");
+    overlay && overlay.classList.add("open");
+    document.body.style.overflow = "hidden";
   }
+  function closeMenu() {
+    drawer && drawer.classList.remove("open");
+    overlay && overlay.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+  menuBtn && menuBtn.addEventListener("click", openMenu);
+  closeBtn && closeBtn.addEventListener("click", closeMenu);
+  overlay && overlay.addEventListener("click", closeMenu);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
 
-  var reveals = document.querySelectorAll(".reveal");
-  if (reveals.length && "IntersectionObserver" in window) {
-    var io = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            e.target.classList.add("in");
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -24px 0px" }
-    );
-    reveals.forEach(function (el) { io.observe(el); });
-    window.setTimeout(function () {
-      document.querySelectorAll(".reveal:not(.in)").forEach(function (el) {
-        el.classList.add("in");
+  window.addEventListener("scroll", () => {
+    if (!header) return;
+    header.classList.toggle("is-solid", window.scrollY > 8);
+  }, { passive: true });
+
+  const pills = document.querySelectorAll("[data-filter]");
+  const cards = document.querySelectorAll("[data-cat]");
+  pills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      pills.forEach((p) => p.classList.remove("is-active"));
+      pill.classList.add("is-active");
+      const key = pill.getAttribute("data-filter");
+      cards.forEach((card) => {
+        const show = key === "all" || card.getAttribute("data-cat") === key;
+        card.style.display = show ? "" : "none";
       });
-    }, 450);
-  } else {
-    reveals.forEach(function (el) { el.classList.add("in"); });
-  }
-
-  var form = document.getElementById("contact-form");
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var status = document.getElementById("form-status");
-      if (status) {
-        status.textContent = "已记录您的留言。正式对接请通过电话或邮件联系。";
-        status.classList.add("show");
-      }
-      form.reset();
     });
-  }
+  });
+
+  const grid = document.querySelector(".fabric-grid");
+  document.querySelectorAll("[data-view]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("[data-view]").forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      if (!grid) return;
+      grid.classList.toggle("is-list", btn.getAttribute("data-view") === "list");
+    });
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 })();

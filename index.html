@@ -1,209 +1,155 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>色织图鉴 — 南通开发区恒隆纺织有限公司</title>
-  <meta name="description" content="南通开发区恒隆纺织有限公司色织图鉴：以真实布面摄影浏览条格、素色、衬衫与家纺用途色织面料。" />
+  <title>恒隆纺织 · 色织图鉴</title>
+  <meta name="description" content="南通开发区恒隆纺织有限公司 — 色织布工厂图鉴式浏览。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <nav class="site-nav" aria-label="主导航">
-    <div class="nav-inner">
-      <a class="logo" href="index.html">恒隆纺织<span>HENGLONG · YARN-DYED</span></a>
-      <button class="nav-toggle" type="button" aria-label="菜单" aria-expanded="false">☰</button>
-      <div class="nav-links">
-        <a href="index.html" class="active">色织图鉴</a>
-        <a href="about.html">关于我们</a>
-        <a href="products.html">产品与服务</a>
-        <a href="contact.html">联系我们</a>
-      </div>
+  <header class="site-header">
+    <div class="header-left">
+      <button class="menu-btn" type="button" data-menu-open aria-label="打开菜单">
+        <span class="bars" aria-hidden="true"><span></span><span></span></span>
+        Menu
+      </button>
     </div>
-  </nav>
+    <a class="wordmark" href="index.html">恒隆纺织<small>Henglong · Yarn-Dyed</small></a>
+    <div class="header-right">
+      <a href="products.html">图鉴</a>
+      <a href="contact.html"><span class="hide-sm">联系</span></a>
+    </div>
+  </header>
 
-  <main>
-    <section class="lookbook-hero">
-      <div class="lookbook-hero-copy reveal">
-        <p class="kicker">南通开发区 · 色织布工厂</p>
-        <h1>色织图鉴<em>LOOKBOOK · YARN-DYED</em></h1>
-        <p class="lead">
-          像翻阅一本色卡样册：先看见布面，再走进规格与协作。
-          恒隆专注纱线先染、布面后成的色织路径，服务服装与家纺面料需求。
-        </p>
-        <div class="hero-swatches">
-          <p>本季布面方向</p>
-          <div class="swatches">
-            <span class="swatch lg"><img src="images/web/swatch-1.jpg" alt="格纹色织布面小样" /></span>
-            <span class="swatch lg"><img src="images/web/swatch-2.jpg" alt="苏格兰纹布面小样" /></span>
-            <span class="swatch lg"><img src="images/web/swatch-3.jpg" alt="泡泡纱条纹小样" /></span>
-            <span class="swatch lg"><img src="images/web/swatch-4.jpg" alt="牛仔纹理素色小样" /></span>
-            <span class="swatch lg"><img src="images/web/swatch-5.jpg" alt="丹宁肌理小样" /></span>
-            <span class="swatch lg"><img src="images/web/swatch-6.jpg" alt="牛津纺布面小样" /></span>
-          </div>
-        </div>
-      </div>
-      <div class="lookbook-hero-visual">
-        <div class="photo">
-          <img src="images/web/hero.jpg" alt="色织格纹布面特写，经纬交织清晰可见" />
-        </div>
-      </div>
-    </section>
+  <div class="nav-overlay" data-menu-close></div>
+  <aside class="nav-drawer" aria-label="主导航">
+    <button class="close" type="button" data-menu-close>Close</button>
+    <nav>
+      <a href="index.html">色织图鉴</a>
+      <a href="products.html">探索布面</a>
+      <a href="about.html">关于恒隆</a>
+      <a href="contact.html">联系我们</a>
+    </nav>
+    <div class="meta">南通开发区恒隆纺织有限公司<br />色织布 · 纱线染色后织造</div>
+  </aside>
 
-    <article class="lookbook-row reveal">
-      <div class="lookbook-meta">
-        <p class="cat">01 — STRIPES &amp; CHECKS</p>
-        <h2>色织条格</h2>
-        <p>经纬配色织就的条纹与格子，是色织最具辨识度的外观。节奏可疏可密，适合衬衫、裙装与工装。</p>
-        <div class="shot-thumbs">
-          <span class="swatch"><img src="images/web/swatch-3.jpg" alt="条纹小样" /></span>
-          <span class="swatch"><img src="images/web/swatch-1.jpg" alt="格纹小样" /></span>
-          <span class="swatch"><img src="images/web/swatch-2.jpg" alt="苏格兰纹小样" /></span>
-          <span class="swatch"><img src="images/web/stripes.jpg" alt="细条纹小样" /></span>
-        </div>
-        <a class="more" href="products.html" style="margin-top:24px">查看品类</a>
-      </div>
-      <div class="lookbook-shot">
-        <div class="photo"><img src="images/web/stripes-alt.jpg" alt="色织条纹布面摄影特写" /></div>
-      </div>
-    </article>
+  <section class="hero">
+    <div class="hero-media">
+      <img src="images/web/hero.jpg" alt="色织格纹布面特写" />
+    </div>
+    <div class="hero-content">
+      <div class="hero-kicker">New Collection</div>
+      <h1 class="hero-title"><span>色织</span><span>图鉴</span></h1>
+      <a class="hero-cta" href="products.html">探索布面目录</a>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </section>
 
-    <article class="lookbook-row flip reveal">
-      <div class="lookbook-meta">
-        <p class="cat">02 — SOLID YARN-DYED</p>
-        <h2>素色色织</h2>
-        <p>近色纱线织出匀净布面，保留色织质地。适合需要沉稳底色的服装与家纺产品。</p>
-        <div class="shot-thumbs">
-          <span class="swatch"><img src="images/web/swatch-4.jpg" alt="素色小样一" /></span>
-          <span class="swatch"><img src="images/web/swatch-5.jpg" alt="素色小样二" /></span>
-          <span class="swatch"><img src="images/web/solid-warm.jpg" alt="华夫格肌理小样" /></span>
-        </div>
-        <a class="more" href="products.html" style="margin-top:24px">查看品类</a>
-      </div>
-      <div class="lookbook-shot">
-        <div class="photo"><img src="images/web/solid.jpg" alt="素色梭织布面肌理特写" /></div>
-      </div>
-    </article>
+  <section class="section section-narrow">
+    <div class="section-head reveal">
+      <div class="eyebrow">Featured Directions</div>
+      <h2>本季关注的方向</h2>
+      <p>以摄影布面呈现色织条格、素色肌理与衬衫向组织。颜色写在纱线上，织造之后才成为可触摸的纹样。</p>
+    </div>
+    <div class="feature-grid">
+      <a class="feature-card wide reveal" href="products.html">
+        <img src="images/web/checks.jpg" alt="色织格纹系列布面" />
+        <div class="cap"><strong>色织条格</strong><span>Stripes &amp; Checks</span></div>
+      </a>
+      <a class="feature-card reveal" href="products.html">
+        <img src="images/web/solid.jpg" alt="素色色织肌理" />
+        <div class="cap"><strong>素色色织</strong><span>Solid Yarn-Dyed</span></div>
+      </a>
+      <a class="feature-card reveal" href="products.html">
+        <img src="images/web/shirting.jpg" alt="衬衫向色织布面" />
+        <div class="cap"><strong>衬衫向</strong><span>Shirting</span></div>
+      </a>
+      <a class="feature-card reveal" href="products.html">
+        <img src="images/web/home.jpg" alt="家纺用途色织格调" />
+        <div class="cap"><strong>家纺格调</strong><span>Home Textile</span></div>
+      </a>
+      <a class="feature-card wide reveal" href="products.html">
+        <img src="images/web/stripes-alt.jpg" alt="细条纹色织特写" />
+        <div class="cap"><strong>细条与泡泡纱感</strong><span>Stripe Texture</span></div>
+      </a>
+    </div>
+  </section>
 
-    <article class="lookbook-row reveal">
-      <div class="lookbook-meta">
-        <p class="cat">03 — SHIRTING</p>
-        <h2>衬衫用途</h2>
-        <p>面向商务与休闲衬衫，沟通轻薄至中等克重的色织方案，兼顾条格表现与穿着相关规格。</p>
-        <div class="shot-thumbs">
-          <span class="swatch"><img src="images/web/swatch-6.jpg" alt="牛津纺小样" /></span>
-          <span class="swatch"><img src="images/web/shirting-alt.jpg" alt="棉丝面料小样" /></span>
-          <span class="swatch"><img src="images/web/swatch-3.jpg" alt="衬衫条纹小样" /></span>
-        </div>
-        <a class="more" href="products.html" style="margin-top:24px">查看品类</a>
-      </div>
-      <div class="lookbook-shot">
-        <div class="photo"><img src="images/web/shirting.jpg" alt="牛津纺衬衫面料布面特写" /></div>
-      </div>
-    </article>
+  <section class="statement reveal">
+    <p>恒隆专注纱线染色后织造的色织布。图鉴式浏览，让布面本身成为主叙事——安静的黑白界面，色彩来自真实织纹。</p>
+  </section>
 
-    <article class="lookbook-row flip reveal">
-      <div class="lookbook-meta">
-        <p class="cat">04 — HOME TEXTILE</p>
-        <h2>家纺相关</h2>
-        <p>针对床品、窗帘等更大面积场景，讨论幅宽、克重与配色节奏，让色织外观保持稳定观感。</p>
-        <div class="shot-thumbs">
-          <span class="swatch"><img src="images/web/home.jpg" alt="家纺格纹小样" /></span>
-          <span class="swatch"><img src="images/web/home-alt.jpg" alt="家纺格纹小样二" /></span>
-          <span class="swatch"><img src="images/web/checks-alt.jpg" alt="多色格纹小样" /></span>
+  <section class="section section-narrow">
+    <div class="section-head reveal">
+      <div class="eyebrow">Catalog Discovery</div>
+      <h2>从目录进入</h2>
+      <p>四列节奏浏览常见色织方向。具体纱支、密度与幅宽需另行确认。</p>
+    </div>
+    <div class="fabric-grid" style="padding-left:0;padding-right:0">
+      <a class="fabric-card reveal" href="products.html">
+        <div class="thumb"><img src="images/web/hl-01.jpg" alt="HL·01 色织条格" /></div>
+        <div class="fabric-meta">
+          <div><h3>HL · 01</h3><p class="type">色织条格</p></div>
+          <div class="swatches"><i style="background-image:url(images/web/swatch-1.jpg)"></i><i style="background-image:url(images/web/swatch-2.jpg)"></i></div>
         </div>
-        <a class="more" href="products.html" style="margin-top:24px">查看品类</a>
-      </div>
-      <div class="lookbook-shot">
-        <div class="photo"><img src="images/web/home.jpg" alt="家纺用途色织格纹布面" /></div>
-      </div>
-    </article>
-
-    <section class="collections">
-      <div class="wrap collections-head reveal">
-        <p class="section-label">Collections</p>
-        <h2 class="section-title">布面速览</h2>
-        <p>点击进入产品与服务，了解规格沟通与协作方式</p>
-      </div>
-      <div class="wrap mosaic">
-        <a class="mosaic-item reveal" href="products.html">
-          <div class="photo"><img src="images/web/mosaic-1.jpg" alt="格伦格纹色织布面" /></div>
-          <div class="caption">格伦格纹<small>GLEN PLAID</small></div>
-        </a>
-        <a class="mosaic-item reveal" href="products.html">
-          <div class="photo"><img src="images/web/mosaic-2.jpg" alt="素色梭织布面" /></div>
-          <div class="caption">素色梭织<small>SOLID WEAVE</small></div>
-        </a>
-        <a class="mosaic-item wide reveal" href="products.html">
-          <div class="photo"><img src="images/web/mosaic-3.jpg" alt="牛津纺布面特写" /></div>
-          <div class="caption">牛津纺<small>OXFORD CLOTH</small></div>
-        </a>
-        <a class="mosaic-item reveal" href="products.html">
-          <div class="photo"><img src="images/web/mosaic-4.jpg" alt="多色格纹布面" /></div>
-          <div class="caption">格纹组合<small>CHECKS</small></div>
-        </a>
-        <a class="mosaic-item reveal" href="products.html">
-          <div class="photo"><img src="images/web/mosaic-5.jpg" alt="丹宁肌理布面" /></div>
-          <div class="caption">丹宁肌理<small>DENIM TEXTURE</small></div>
-        </a>
-        <a class="mosaic-item reveal" href="about.html">
-          <div class="photo"><img src="images/web/mosaic-6.jpg" alt="泡泡纱条纹布面" /></div>
-          <div class="caption">走进恒隆<small>ABOUT</small></div>
-        </a>
-        <a class="mosaic-item reveal" href="contact.html">
-          <div class="photo"><img src="images/web/mosaic-7.jpg" alt="棉丝梭织布面" /></div>
-          <div class="caption">开始沟通<small>CONTACT</small></div>
-        </a>
-      </div>
-    </section>
-
-    <section class="page-banner" style="border-bottom:none;padding:64px 0">
-      <div class="wrap-narrow reveal">
-        <p class="kicker">Enquiry</p>
-        <h1 style="font-size:clamp(1.5rem,3vw,2rem)">有具体色卡或来样？</h1>
-        <p>告诉我们用途与参考，我们安排规格沟通与试织确认。</p>
-        <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-          <a class="btn" href="contact.html">联系我们</a>
-          <a class="btn btn-line" href="products.html">全部品类</a>
+      </a>
+      <a class="fabric-card reveal" href="products.html">
+        <div class="thumb"><img src="images/web/hl-02.jpg" alt="HL·02 格纹色织" /></div>
+        <div class="fabric-meta">
+          <div><h3>HL · 02</h3><p class="type">格纹色织</p></div>
+          <div class="swatches"><i style="background-image:url(images/web/swatch-2.jpg)"></i><i style="background-image:url(images/web/hero.jpg)"></i></div>
         </div>
-      </div>
-    </section>
-  </main>
+      </a>
+      <a class="fabric-card reveal" href="products.html">
+        <div class="thumb"><img src="images/web/hl-03.jpg" alt="HL·03 素色色织" /></div>
+        <div class="fabric-meta">
+          <div><h3>HL · 03</h3><p class="type">素色色织</p></div>
+          <div class="swatches"><i style="background-image:url(images/web/swatch-4.jpg)"></i><i style="background-image:url(images/web/swatch-5.jpg)"></i></div>
+        </div>
+      </a>
+      <a class="fabric-card reveal" href="products.html">
+        <div class="thumb"><img src="images/web/hl-05.jpg" alt="HL·05 衬衫条纹" /></div>
+        <div class="fabric-meta">
+          <div><h3>HL · 05</h3><p class="type">衬衫条纹</p></div>
+          <div class="swatches"><i style="background-image:url(images/web/swatch-3.jpg)"></i><i style="background-image:url(images/web/swatch-6.jpg)"></i></div>
+        </div>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:12px" class="reveal">
+      <a class="hero-cta" style="color:var(--ink);border-color:var(--ink)" href="products.html">查看全部布面</a>
+    </div>
+  </section>
 
   <footer class="site-footer">
-    <div class="footer-grid">
-      <div>
-        <div class="brand">恒隆纺织<small>NANTONG · YARN-DYED</small></div>
-        <p>南通开发区恒隆纺织有限公司<br />色织布工厂</p>
-        <div class="footer-swatches">
-          <span class="swatch"><img src="images/web/swatch-1.jpg" alt="" /></span>
-          <span class="swatch"><img src="images/web/swatch-2.jpg" alt="" /></span>
-          <span class="swatch"><img src="images/web/swatch-3.jpg" alt="" /></span>
-          <span class="swatch"><img src="images/web/swatch-4.jpg" alt="" /></span>
-          <span class="swatch"><img src="images/web/swatch-5.jpg" alt="" /></span>
-        </div>
-      </div>
-      <div>
-        <h4>浏览</h4>
-        <a href="index.html">色织图鉴</a>
-        <a href="about.html">关于我们</a>
-        <a href="products.html">产品与服务</a>
-        <a href="contact.html">联系我们</a>
-      </div>
-      <div>
-        <h4>品类</h4>
-        <li>色织条格</li>
-        <li>素色色织</li>
-        <li>衬衫 / 家纺用途</li>
-      </div>
-      <div>
-        <h4>所在地</h4>
-        <li>江苏省南通市</li>
-        <li>经济技术开发区</li>
-      </div>
+    <div>
+      <div class="brand">恒隆纺织</div>
+      <p style="color:var(--ink-soft);font-size:13px;line-height:1.7;margin:12px 0 0;max-width:280px">南通开发区恒隆纺织有限公司 · 色织布工厂</p>
+    </div>
+    <div>
+      <h4>浏览</h4>
+      <a href="index.html">色织图鉴</a>
+      <a href="products.html">探索布面</a>
+      <a href="about.html">关于恒隆</a>
+      <a href="contact.html">联系我们</a>
+    </div>
+    <div>
+      <h4>方向</h4>
+      <a href="products.html">色织条格</a>
+      <a href="products.html">素色色织</a>
+      <a href="products.html">衬衫向</a>
+      <a href="products.html">家纺格调</a>
+    </div>
+    <div>
+      <h4>所在地</h4>
+      <a href="contact.html">江苏 · 南通开发区</a>
     </div>
     <div class="footer-bottom">
       <span>© 南通开发区恒隆纺织有限公司</span>
-      <span>色织图鉴 · LOOKBOOK</span>
+      <span>Yarn-Dyed Lookbook</span>
     </div>
   </footer>
   <script src="js/main.js"></script>
