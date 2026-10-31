@@ -3,12 +3,12 @@
 Reference: https://etrotextiles.etro.com/ (public pages only).
 Original CSS/JS + licensed fabric photos. No Etro assets/logos/fonts/code.
 
-| Etro effect | Henglong polish (v39 stage) |
+| Etro effect | Henglong polish (v40 stage) |
 |---|---|
-| Pinned full-screen stage | Sticky 100svh/lvh pin ~5200vh; locked translate3d |
-| Hero wipe | `--hw`≈`--hp` curtain; 224° silk feather; richer midwipe fabric |
-| Giant DISCOVER headline | 50vw; longer hold/pop; staggered g2; denser midwipe ink |
-| Tilted cards crossing type | Softened base --r + lean/tilt punch; earlier track peek |
-| Smooth scrub | Soft critical ω≈0.54/0.33 + longer coast + lighter skew |
+| Pinned full-screen stage | Sticky 100svh/lvh pin ~5400vh; locked translate3d |
+| Hero wipe | `--hw`≈`--hp`; 225° silk feather; brighter edge sheen |
+| Giant DISCOVER headline | 51vw; denser g1/g2 ink; longer hold/pop breath |
+| Tilted cards crossing type | Larger polaroids; lean/punch shadow; tempered corridor |
+| Smooth scrub | Soft critical ω≈0.50/0.30 + longer coast + softer skew |
 
 QA: `frame-hero|midwipe|wipe|peek|cards.html`
