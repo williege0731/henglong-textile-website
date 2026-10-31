@@ -3,13 +3,15 @@
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Stage frame · cards</title>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/style.css?v=5"/>
-<link rel="stylesheet" href="css/effects.css?v=5"/>
+<link rel="stylesheet" href="css/style.css?v=6"/>
+<link rel="stylesheet" href="css/effects.css?v=6"/>
 <style>
   body{margin:0;overflow:hidden;background:#F4F2EF}
   .site-header{position:fixed}
   .stage{height:100vh!important}
   .stage-pin{position:relative!important;height:100vh!important}
+  .hero-title .line>span{transform:none!important;animation:none!important}
+  .hero-kicker.split,.stage-hero .ghost-btn{opacity:1!important;animation:none!important}
 </style>
 </head><body>
 <header class="site-header solid">
@@ -17,31 +19,20 @@
   <a class="wordmark" href="index.html">恒隆纺织<small>Henglong Yarn-Dyed</small></a>
   <div class="header-right"><a href="products.html">Search</a><a href="about.html">关于</a><a href="contact.html">联系</a></div>
 </header>
-<section class="stage" data-stage data-phase="2" style="--p0:1;--hp:1;--fp:0.52;--gs:0.9">
+
+<section class="stage" data-stage data-phase="2" style="--p0:1;--hp:1;--fp:0.55;--gs:0.86">
   <div class="stage-pin">
     <div class="stage-giant" aria-hidden="true"><span class="g1">探索</span><span class="g2">新面料</span></div>
     <div class="stage-veil" aria-hidden="true"></div>
-    <div class="stage-floats">
-      <div class="track" id="track">
-        <a class="float-card" href="products.html" style="--r:-10deg;--t:10vh;--bob:28;--fs:1.02"><div class="fc-img"><img src="images/web/hl-01.jpg" alt=""/></div><div class="fc-label"><strong>格伦格纹</strong><span>色织条格</span></div></a>
-        <a class="float-card" href="products.html" style="--r:8deg;--t:44vh;--bob:-32;--fs:1"><div class="fc-img"><img src="images/web/hl-02.jpg" alt=""/></div><div class="fc-label"><strong>苏格兰纹</strong><span>格纹色织</span></div></a>
-        <a class="float-card" href="products.html" style="--r:-6deg;--t:22vh;--bob:36;--fs:1.03"><div class="fc-img"><img src="images/web/hl-05.jpg" alt=""/></div><div class="fc-label"><strong>衬衫条纹</strong><span>衬衫向</span></div></a>
-        <a class="float-card" href="products.html" style="--r:12deg;--t:36vh;--bob:-8;--fs:.99"><div class="fc-img"><img src="images/web/mosaic-1.jpg" alt=""/></div><div class="fc-label"><strong>多色格</strong><span>色织格纹</span></div></a>
-        <a class="float-card" href="products.html" style="--r:-9deg;--t:14vh;--bob:16;--fs:1.01"><div class="fc-img"><img src="images/web/hl-04.jpg" alt=""/></div><div class="fc-label"><strong>岩灰素织</strong><span>素色色织</span></div></a>
-        <a class="float-card" href="products.html" style="--r:7deg;--t:48vh;--bob:-20;--fs:1"><div class="fc-img"><img src="images/web/hl-07.jpg" alt=""/></div><div class="fc-label"><strong>暖调格</strong><span>家纺格调</span></div></a>
-        <a class="float-card" href="products.html" style="--r:-12deg;--t:28vh;--bob:10;--fs:1.02"><div class="fc-img"><img src="images/web/hl-06.jpg" alt=""/></div><div class="fc-label"><strong>斜纹条格</strong><span>斜纹组织</span></div></a>
-        <a class="float-card" href="products.html" style="--r:9deg;--t:40vh;--bob:-14;--fs:1"><div class="fc-img"><img src="images/web/hl-08.jpg" alt=""/></div><div class="fc-label"><strong>来样肌理</strong><span>来样开发</span></div></a>
-      </div>
-    </div>
-    <div class="stage-hero" style="clip-path:inset(0 0 100% 0);pointer-events:none"></div>
+    <div class="stage-floats"><div class="track"><a class="float-card" href="products.html" style="--r:-11deg;--t:8vh;--d:0;--bob:32;--fs:1.02;--z:8px"><div class="fc-img"><img src="images/web/hl-01.jpg" alt="格伦格纹"/></div><div class="fc-label"><strong>格伦格纹</strong><span>色织条格</span></div></a><a class="float-card" href="products.html" style="--r:9deg;--t:46vh;--d:1;--bob:-28;--fs:1.02;--z:8px"><div class="fc-img"><img src="images/web/hl-02.jpg" alt="苏格兰纹"/></div><div class="fc-label"><strong>苏格兰纹</strong><span>格纹色织</span></div></a><a class="float-card" href="products.html" style="--r:-7deg;--t:24vh;--d:2;--bob:40;--fs:1.02;--z:8px"><div class="fc-img"><img src="images/web/hl-05.jpg" alt="衬衫条纹"/></div><div class="fc-label"><strong>衬衫条纹</strong><span>衬衫向</span></div></a><a class="float-card" href="products.html" style="--r:13deg;--t:34vh;--d:3;--bob:-12;--fs:1.02;--z:8px"><div class="fc-img"><img src="images/web/mosaic-1.jpg" alt="多色格"/></div><div class="fc-label"><strong>多色格</strong><span>色织格纹</span></div></a><a class="float-card" href="products.html" style="--r:-10deg;--t:16vh;--d:4;--bob:22;--fs:1.02;--z:8px"><div class="fc-img"><img src="images/web/hl-04.jpg" alt="岩灰素织"/></div><div class="fc-label"><strong>岩灰素织</strong><span>素色色织</span></div></a><a class="float-card" href="products.html" style="--r:8deg;--t:50vh;--d:5;--bob:-36;--fs:1.02;--z:8px"><div class="fc-img"><img src="images/web/hl-07.jpg" alt="暖调格"/></div><div class="fc-label"><strong>暖调格</strong><span>家纺格调</span></div></a><a class="float-card" href="products.html" style="--r:-13deg;--t:30vh;--d:6;--bob:18;--fs:1.02;--z:8px"><div class="fc-img"><img src="images/web/hl-06.jpg" alt="斜纹条格"/></div><div class="fc-label"><strong>斜纹条格</strong><span>斜纹组织</span></div></a><a class="float-card" href="products.html" style="--r:10deg;--t:38vh;--d:7;--bob:-24;--fs:1.02;--z:8px"><div class="fc-img"><img src="images/web/hl-08.jpg" alt="来样肌理"/></div><div class="fc-label"><strong>来样肌理</strong><span>来样开发</span></div></a><a class="float-card" href="products.html" style="--r:-7deg;--t:32vh;--d:8;--bob:30;--fs:1.02;--z:8px"><div class="fc-img"><img src="images/web/hl-03.jpg" alt="细密条格"/></div><div class="fc-label"><strong>细密条格</strong><span>色织细条</span></div></a><a class="float-card" href="products.html" style="--r:10deg;--t:18vh;--d:9;--bob:-16;--fs:1.02;--z:8px"><div class="fc-img"><img src="images/web/stripes.jpg" alt="经典条纹"/></div><div class="fc-label"><strong>经典条纹</strong><span>衬衫条纹</span></div></a></div></div>
+    <div class="stage-hero" style="opacity:0;pointer-events:none"></div>
     <div class="stage-progress"><i></i><i></i><i></i></div>
   </div>
 </section>
 <script>
-  // position track so cards cross the giant type
-  const track=document.getElementById('track');
-  const dist=Math.max(track.scrollWidth-innerWidth*0.25,1);
-  track.style.transform='translate3d('+(-0.48*dist)+'px,0,0)';
+  const track=document.querySelector('.track');
+  const dist=Math.max(track.scrollWidth-innerWidth*0.2,1);
+  track.style.transform='translate3d('+(-0.52*dist)+'px,0,0)';
   document.documentElement.dataset.shotReady='1';
 </script>
 </body></html>

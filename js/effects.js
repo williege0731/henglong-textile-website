@@ -70,37 +70,44 @@
     if(stage && !reduce){
       const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-vh);
       const p=clamp((y-top)/len);
-      p0=easeOut(clamp(p/0.08));
-      hp=easeInOut(clamp((p-0.06)/0.26));
-      /* hold on giant type before cards start crossing */
-      fp=easeOut(clamp((p-0.34)/0.66));
-      gs=1-fp*0.22;
-      phase=p<0.08?'0':(p<0.36?'1':'2');
-      onHero=hp<0.62;
+      p0=easeOut(clamp(p/0.07));
+      hp=easeInOut(clamp((p-0.05)/0.28));
+      /* hold giant type, then cards cross through */
+      fp=easeOut(clamp((p-0.32)/0.68));
+      gs=1-fp*0.26;
+      phase=p<0.07?'0':(p<0.34?'1':'2');
+      onHero=hp<0.58;
     }
     return {y,vh,p0,hp,fp,gs,phase,onHero};
   }
 
+  let vel=0;
   function apply(t,hard){
     if(stage && !reduce){
-      const k=hard?1:0.078;
-      smooth.p0=lerp(smooth.p0,t.p0,hard?1:0.11);
+      /* velocity-aware lerp: catch up faster when scrubbing hard */
+      const speed=Math.min(1.8, Math.abs(t.y-lastY)/28);
+      vel=lerp(vel,speed,0.2);
+      const boost=1+vel*0.55;
+      const k=hard?1:Math.min(0.16,0.068*boost);
+      smooth.p0=lerp(smooth.p0,t.p0,hard?1:Math.min(0.18,0.1*boost));
       smooth.hp=lerp(smooth.hp,t.hp,k);
-      smooth.fp=lerp(smooth.fp,t.fp,hard?1:0.062);
-      smooth.gs=lerp(smooth.gs,t.gs,hard?1:0.09);
+      smooth.fp=lerp(smooth.fp,t.fp,hard?1:Math.min(0.14,0.055*boost));
+      smooth.gs=lerp(smooth.gs,t.gs,hard?1:0.085);
       stage.style.setProperty('--p0',smooth.p0.toFixed(4));
       stage.style.setProperty('--hp',smooth.hp.toFixed(4));
       stage.style.setProperty('--fp',smooth.fp.toFixed(4));
       stage.style.setProperty('--gs',smooth.gs.toFixed(4));
       stage.dataset.phase=t.phase;
       if(track){
-        const dist=Math.max(track.scrollWidth-innerWidth*0.25,1);
+        const dist=Math.max(track.scrollWidth-innerWidth*0.2,1);
         track.style.transform=`translate3d(${(-smooth.fp*dist).toFixed(2)}px,0,0)`;
         [...track.children].forEach((c,i)=>{
-          const bob=Math.sin(smooth.fp*6.4+i*1.05)*46*(0.45+0.55*Math.abs(Math.sin(i*1.4)));
-          const scale=1+Math.sin(smooth.fp*3.1+i*0.75)*0.045;
+          const bob=Math.sin(smooth.fp*7.1+i*1.1)*52*(0.4+0.6*Math.abs(Math.sin(i*1.35)));
+          const scale=1+Math.sin(smooth.fp*3.4+i*0.8)*0.055;
+          const z=(Math.sin(smooth.fp*2.2+i)*18).toFixed(1)+'px';
           c.style.setProperty('--bob',bob.toFixed(2));
           c.style.setProperty('--fs',scale.toFixed(3));
+          c.style.setProperty('--z',z);
         });
       }
       if(header){
@@ -148,7 +155,7 @@
   function goShot(name){
     if(!stage||reduce)return;
     const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-innerHeight);
-    const map={hero:0.02,wipe:0.24,midwipe:0.16,stage1:0.24,cards:0.58,stage2:0.58,stage0:0.02,stage3:0.84};
+    const map={hero:0.02,wipe:0.26,midwipe:0.15,stage1:0.26,cards:0.56,stage2:0.56,stage0:0.02,stage3:0.86};
     const p=map[name];
     if(p==null)return;
     scrollTo(0, top+len*p);
