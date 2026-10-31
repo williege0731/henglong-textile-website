@@ -8,7 +8,7 @@
 
   const stage=document.querySelector('[data-stage]');
   let track=null;
-  const smooth={p0:0,hp:0,hp2:0,fp:0,sp:0,gs:1,hold:0,pop:0,cross:0,scrub:0};
+  const smooth={p0:0,hp:0,hp2:0,fp:0,sp:0,gs:1,hold:0,pop:0,cross:0,scrub:0,ps:0};
   if(stage && !reduce){
     const floats=stage.querySelector('.stage-floats');
     if(floats && !floats.querySelector('.track')){
@@ -61,9 +61,9 @@
 
   /* Progress map (of stage scroll 0..1):
      0–0.05  hero settle (p0)
-     0.03–0.24 soft wipe + giant rise (hp); g2 lags as hp2
-     0.24–0.40 type hold / breath / pop settle
-     0.36–1.0  cards scrub; type split lags via sp
+     0.03–0.22 soft wipe + giant rise (hp); g2 lags as hp2
+     0.22–0.38 type hold / breath / pop settle
+     0.34–1.0  cards scrub; type split lags via sp
   */
   function targets(){
     const y=scrollY,vh=innerHeight;
@@ -71,15 +71,15 @@
     if(stage && !reduce){
       const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-vh);
       p=clamp((y-top)/len);
-      p0=easeOut(clamp(p/0.038));
-      hp=easeInOut(clamp((p-0.016)/0.22));
+      p0=easeOut(clamp(p/0.035));
+      hp=easeInOut(clamp((p-0.014)/0.2));
       /* crawl then glide across type */
-      const raw=clamp((p-0.36)/0.64);
-      fp=Math.pow(easeInOut(raw), 0.88);
-      sp=Math.pow(clamp((fp-0.2)/0.8), 1.25);
-      gs=1-fp*0.24;
-      phase=p<0.038?'0':(p<0.40?'1':'2');
-      onHero=hp<0.52;
+      const raw=clamp((p-0.34)/0.66);
+      fp=Math.pow(easeInOut(raw), 0.85);
+      sp=Math.pow(clamp((fp-0.22)/0.78), 1.28);
+      gs=1-fp*0.22;
+      phase=p<0.035?'0':(p<0.38?'1':'2');
+      onHero=hp<0.54;
     }
     return {y,vh,p0,hp,fp,sp,gs,phase,onHero,p};
   }
@@ -101,25 +101,27 @@
       lastT=now;
       const dy=t.y-lastY;
       const speed=Math.min(2.8, Math.abs(dy)/16);
-      vel=lerp(vel,speed,hard?1:expAlpha(6.2,dt));
-      spin=lerp(spin, Math.max(-1.6, Math.min(1.6, dy/32)), hard?1:expAlpha(4.6,dt));
-      coast=hard?0:lerp(coast + dy*0.00015, 0, expAlpha(1.9,dt));
-      const boost=1+vel*0.4;
-      smooth.p0=lerp(smooth.p0,t.p0,hard?1:expAlpha(8.2*boost,dt));
-      smooth.hp=lerp(smooth.hp,t.hp,hard?1:expAlpha(8.4*boost,dt));
+      vel=lerp(vel,speed,hard?1:expAlpha(5.8,dt));
+      spin=lerp(spin, Math.max(-1.7, Math.min(1.7, dy/30)), hard?1:expAlpha(4.2,dt));
+      coast=hard?0:lerp(coast + dy*0.00014, 0, expAlpha(1.75,dt));
+      const boost=1+vel*0.36;
+      const look=hard?0:Math.max(-0.035, Math.min(0.035, (dy/800)*0.022));
+      smooth.p0=lerp(smooth.p0,t.p0,hard?1:expAlpha(8.4*boost,dt));
+      smooth.hp=lerp(smooth.hp,t.hp,hard?1:expAlpha(8.6*boost,dt));
       /* second line lags first for staggered reveal */
-      smooth.hp2=lerp(smooth.hp2, clamp((t.hp-0.08)/0.92), hard?1:expAlpha(5.4*boost,dt));
-      /* creamier spring scrub */
+      smooth.hp2=lerp(smooth.hp2, clamp((t.hp-0.1)/0.9), hard?1:expAlpha(5.0*boost,dt));
+      /* look-ahead creamier spring scrub */
       if(hard){spring.fp=t.fp;spring.v=0;spring.sp=t.sp;spring.sv=0;}
       else{
-        const s1=springStep(spring.fp, spring.v, t.fp + coast, dt, 5.4*boost);
+        const s1=springStep(spring.fp, spring.v, clamp(t.fp + coast + look), dt, 4.6*boost);
         spring.fp=s1.x; spring.v=s1.v;
-        const s2=springStep(spring.sp, spring.sv, t.sp, dt, 4.2*boost);
+        const s2=springStep(spring.sp, spring.sv, t.sp, dt, 3.6*boost);
         spring.sp=s2.x; spring.sv=s2.v;
       }
       smooth.fp=spring.fp;
       smooth.sp=spring.sp;
-      smooth.gs=lerp(smooth.gs,t.gs,hard?1:expAlpha(4.8,dt));
+      smooth.gs=lerp(smooth.gs,t.gs,hard?1:expAlpha(4.4,dt));
+      smooth.ps=lerp(smooth.ps,t.p||0,hard?1:expAlpha(3.8*boost,dt));
       const impulse=hard?0:Math.max(-0.028, Math.min(0.028, dy/1200));
       over.hp=hard?0:lerp(over.hp+impulse*0.45, 0, expAlpha(6.2,dt));
       over.fp=hard?0:lerp(over.fp+impulse*0.6, 0, expAlpha(3.4,dt));
@@ -144,6 +146,7 @@
       stage.style.setProperty('--pop',smooth.pop.toFixed(4));
       stage.style.setProperty('--scrub',smooth.scrub.toFixed(4));
       stage.style.setProperty('--p',(t.p||0).toFixed(4));
+      stage.style.setProperty('--ps',smooth.ps.toFixed(4));
       stage.dataset.phase=t.phase;
       if(track){
         const dist=Math.max(track.scrollWidth-innerWidth*0.05,1);
@@ -230,7 +233,7 @@
   function goShot(name){
     if(!stage||reduce)return;
     const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-innerHeight);
-    const map={hero:0.02,wipe:0.28,midwipe:0.09,peek:0.37,stage1:0.28,cards:0.58,stage2:0.58,stage0:0.02,stage3:0.94};
+    const map={hero:0.02,wipe:0.26,midwipe:0.08,peek:0.35,stage1:0.26,cards:0.6,stage2:0.6,stage0:0.02,stage3:0.94};
     const p=map[name];
     if(p==null)return;
     scrollTo(0, top+len*p);
