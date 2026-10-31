@@ -61,9 +61,9 @@
 
   /* Progress map (of stage scroll 0..1):
      0–0.04  hero settle (p0)
-     0.02–0.23 soft wipe (--hw/--hc) + giant rise (hp); g2 lags
-     0.23–0.62 type hold / breath / pop settle
-     0.60–1.0  cards scrub; type split lags via sp
+     0.02–0.24 soft wipe (--hw/--hc) + giant rise (hp); g2 lags
+     0.24–0.64 type hold / breath / pop settle
+     0.62–1.0  cards scrub; type split lags via sp
   */
   function targets(){
     const y=scrollY,vh=innerHeight;
@@ -72,14 +72,14 @@
       const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-vh);
       p=clamp((y-top)/len);
       p0=easeOut(clamp(p/0.015));
-      hp=easeInOut(clamp((p-0.001)/0.23));
+      hp=easeInOut(clamp((p-0.001)/0.24));
       /* longer hold; crawl then glide; type split waits for denser cross */
-      const raw=clamp((p-0.60)/0.40);
-      fp=Math.pow(easeInOut(raw), 0.6);
-      sp=Math.pow(clamp((fp-0.46)/0.54), 1.65);
-      gs=1-fp*0.2;
-      phase=p<0.03?'0':(p<0.62?'1':'2');
-      onHero=hp<0.3;
+      const raw=clamp((p-0.62)/0.38);
+      fp=Math.pow(easeInOut(raw), 0.62);
+      sp=Math.pow(clamp((fp-0.48)/0.52), 1.7);
+      gs=1-fp*0.18;
+      phase=p<0.03?'0':(p<0.64?'1':'2');
+      onHero=hp<0.28;
     }
     return {y,vh,p0,hp,fp,sp,gs,phase,onHero,p};
   }
@@ -103,28 +103,28 @@
       const speed=Math.min(2.8, Math.abs(dy)/16);
       vel=lerp(vel,speed,hard?1:expAlpha(5.8,dt));
       spin=lerp(spin, Math.max(-1.7, Math.min(1.7, dy/30)), hard?1:expAlpha(4.2,dt));
-      coast=hard?0:lerp(coast + dy*0.00245, 0, expAlpha(0.055,dt));
-      const boost=1+vel*0.075;
-      const look=hard?0:Math.max(-0.09, Math.min(0.09, (dy/360)*0.05));
-      smooth.p0=lerp(smooth.p0,t.p0,hard?1:expAlpha(3.4*boost,dt));
+      coast=hard?0:lerp(coast + dy*0.0026, 0, expAlpha(0.05,dt));
+      const boost=1+vel*0.07;
+      const look=hard?0:Math.max(-0.08, Math.min(0.08, (dy/380)*0.045));
+      smooth.p0=lerp(smooth.p0,t.p0,hard?1:expAlpha(3.2*boost,dt));
       /* dual-stage wipe; --hw tracks type; --hc lags for layered cream */
-      smooth.hpMid=lerp(smooth.hpMid,t.hp,hard?1:expAlpha(1.02*boost,dt));
-      smooth.hp=lerp(smooth.hp,smooth.hpMid,hard?1:expAlpha(0.7*boost,dt));
-      smooth.hw=lerp(smooth.hw, clamp(t.hp), hard?1:expAlpha(1.18*boost,dt));
-      smooth.hc=lerp(smooth.hc, smooth.hw*0.55, hard?1:expAlpha(0.44*boost,dt));
+      smooth.hpMid=lerp(smooth.hpMid,t.hp,hard?1:expAlpha(0.95*boost,dt));
+      smooth.hp=lerp(smooth.hp,smooth.hpMid,hard?1:expAlpha(0.65*boost,dt));
+      smooth.hw=lerp(smooth.hw, clamp(t.hp), hard?1:expAlpha(1.1*boost,dt));
+      smooth.hc=lerp(smooth.hc, smooth.hw*0.52, hard?1:expAlpha(0.4*boost,dt));
       /* second line lags first for staggered reveal */
-      smooth.hp2=lerp(smooth.hp2, clamp((t.hp-0.48)/0.52), hard?1:expAlpha(0.8*boost,dt));
+      smooth.hp2=lerp(smooth.hp2, clamp((t.hp-0.5)/0.5), hard?1:expAlpha(0.75*boost,dt));
       /* look-ahead creamier spring scrub (softer ω) + display lerp */
       if(hard){spring.fp=t.fp;spring.v=0;spring.sp=t.sp;spring.sv=0;smooth.fpVis=t.fp;smooth.hc=t.hp;}
       else{
-        const s1=springStep(spring.fp, spring.v, clamp(t.fp + coast + look), dt, 0.35*boost);
+        const s1=springStep(spring.fp, spring.v, clamp(t.fp + coast + look), dt, 0.32*boost);
         spring.fp=s1.x; spring.v=s1.v;
-        const s2=springStep(spring.sp, spring.sv, t.sp, dt, 0.22*boost);
+        const s2=springStep(spring.sp, spring.sv, t.sp, dt, 0.2*boost);
         spring.sp=s2.x; spring.sv=s2.v;
       }
       smooth.fp=spring.fp;
       smooth.sp=spring.sp;
-      smooth.fpVis=hard?spring.fp:lerp(smooth.fpVis, spring.fp, expAlpha(0.66*boost,dt));
+      smooth.fpVis=hard?spring.fp:lerp(smooth.fpVis, spring.fp, expAlpha(0.6*boost,dt));
       smooth.gs=lerp(smooth.gs,t.gs,hard?1:expAlpha(4.4,dt));
       smooth.ps=lerp(smooth.ps,t.p||0,hard?1:expAlpha(3.8*boost,dt));
       const impulse=hard?0:Math.max(-0.028, Math.min(0.028, dy/1200));
@@ -134,10 +134,10 @@
       const hp2V=clamp(smooth.hp2);
       const fpV=clamp(smooth.fp+over.fp);
       const spV=clamp(smooth.sp);
-      const popT=(hpV>0.7 && fpV<0.19) ? Math.sin(clamp((hpV-0.7)/0.3)*Math.PI) : 0;
-      smooth.pop=lerp(smooth.pop, popT, hard?1:expAlpha(2.2,dt));
-      const holdT=(hpV>0.78 && fpV<0.18) ? (0.5+0.5*Math.sin(now*0.00052)) : 0;
-      smooth.hold=lerp(smooth.hold, holdT, hard?1:expAlpha(1.02,dt));
+      const popT=(hpV>0.68 && fpV<0.2) ? Math.sin(clamp((hpV-0.68)/0.32)*Math.PI) : 0;
+      smooth.pop=lerp(smooth.pop, popT, hard?1:expAlpha(2.05,dt));
+      const holdT=(hpV>0.76 && fpV<0.19) ? (0.5+0.5*Math.sin(now*0.00048)) : 0;
+      smooth.hold=lerp(smooth.hold, holdT, hard?1:expAlpha(0.95,dt));
       /* velocity smear on track while scrubbing fast */
       const scrubT=clamp((vel-0.32)/1.6);
       smooth.scrub=lerp(smooth.scrub, scrubT, hard?1:expAlpha(5.8,dt));
@@ -162,7 +162,7 @@
       if(track){
         const dist=Math.max(track.scrollWidth-innerWidth*0.05,1);
         const fpDraw=clamp(smooth.fpVis+over.fp);
-        const skew=(spin*0.025 + (smooth.scrub||0)*0.035).toFixed(2);
+        const skew=(spin*0.02 + (smooth.scrub||0)*0.03).toFixed(2);
         track.style.transform=`translate3d(${(-fpDraw*dist).toFixed(2)}px,0,0) skewX(${skew}deg)`;
         const mid=innerWidth*0.5;
         let crossSum=0, crossN=0;
@@ -181,15 +181,15 @@
           const scale=0.86+prox*0.24+Math.sin(fpV*2.9+i)*0.018;
           const z=(prox*110+(i%2===0?18:-16)+Math.sin(fpV*2.1+i)*18).toFixed(1)+'px';
           const spn=(spin*(i%2===0?1:-1)*5.8).toFixed(2)+'deg';
-          const tilt=(nx*-26).toFixed(2)+'deg';
-          const ry=(nx*-38 - spin*3).toFixed(2)+'deg';
-          const rx=(prox*-8 + Math.sin(fpV*1.9+i)*2).toFixed(2)+'deg';
+          const tilt=(nx*-24).toFixed(2)+'deg';
+          const ry=(nx*-34 - spin*2.5).toFixed(2)+'deg';
+          const rx=(prox*-7 + Math.sin(fpV*1.9+i)*1.8).toFixed(2)+'deg';
           const row=parseFloat(c.dataset.row||'0')||0;
-          const lean=((row?1:-1)* (40 + punch*62)).toFixed(2)+'deg';
-          const shx=((row?1:-1)*-(34 + punch*42)).toFixed(1);
+          const lean=((row?1:-1)* (42 + punch*64)).toFixed(2)+'deg';
+          const shx=((row?1:-1)*-(36 + punch*44)).toFixed(1);
           /* high/low corridor — tempered so cards stay in-frame */
           const rowDir=row?1:-1;
-          const rowy=rowDir*(30 + fpV*72 + punch*56)*-1;
+          const rowy=rowDir*(28 + fpV*68 + punch*52)*-1;
           c.style.setProperty('--lean',lean);
           c.style.setProperty('--shx',shx);
           c.style.setProperty('--zi', Math.round(10+prox*40+punch*20+(row?2:0)).toString());
