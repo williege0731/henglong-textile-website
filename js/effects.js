@@ -136,6 +136,16 @@
   addEventListener('resize',()=>tick(true));
   tick(true);
 
+  // QA: ?shot=stage2|stage1|products scrolls to a known lookbook frame
+  try{
+    const m=(location.search.match(/[?&]shot=([\w-]+)/)||[])[1];
+    if(m && stage && !reduce){
+      const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-innerHeight);
+      const map={stage0:0.02,stage1:0.16,stage2:0.48,stage3:0.78};
+      if(map[m]!=null){scrollTo(0, top+len*map[m]); setTimeout(()=>tick(true),60);}
+    }
+  }catch(_){}
+
   document.querySelectorAll('.fabric-card').forEach(card=>{
     const thumb=card.querySelector('.thumb');
     if(!thumb)return;
