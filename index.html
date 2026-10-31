@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/effects.css" />
 </head>
 <body>
 <a class="side-rail left" href="products.html">色卡目录</a>
@@ -38,20 +39,26 @@
   <div class="meta">南通开发区恒隆纺织有限公司<br/>色织布工厂 · 纱线染色后织造</div>
 </aside>
 
-<section class="hero">
-  <div class="hero-media"><img src="images/web/hero.jpg" alt="色织格纹布面特写" /></div>
-  <div class="hero-content">
-    <div class="hero-kicker">New Collection</div>
-    <h1 class="hero-title"><span>Exclusive</span><span>色织图鉴</span></h1>
-    <a class="ghost-btn" href="products.html">Discover New Fabrics</a>
+<section class="stage" data-stage>
+  <div class="stage-pin">
+    <div class="stage-giant" aria-hidden="true"><span class="g1">探索</span><span class="g2">新面料</span></div>
+    <div class="stage-floats"><a class="float-card" href="products.html" style="--r:-8deg;--t:18vh;--d:0"><div class="fc-img"><img src="images/web/hl-01.jpg" alt="格伦格纹"/></div><div class="fc-label"><strong>格伦格纹</strong><span>色织条格</span></div></a><a class="float-card" href="products.html" style="--r:6deg;--t:46vh;--d:1"><div class="fc-img"><img src="images/web/swatch-2.jpg" alt="苏格兰纹"/></div><div class="fc-label"><strong>苏格兰纹</strong><span>格纹色织</span></div></a><a class="float-card" href="products.html" style="--r:-4deg;--t:10vh;--d:2"><div class="fc-img"><img src="images/web/hl-05.jpg" alt="衬衫条纹"/></div><div class="fc-label"><strong>衬衫条纹</strong><span>衬衫向</span></div></a><a class="float-card" href="products.html" style="--r:9deg;--t:40vh;--d:3"><div class="fc-img"><img src="images/web/mosaic-3.jpg" alt="多色格"/></div><div class="fc-label"><strong>多色格</strong><span>色织格纹</span></div></a><a class="float-card" href="products.html" style="--r:-7deg;--t:22vh;--d:4"><div class="fc-img"><img src="images/web/hl-04.jpg" alt="岩灰素织"/></div><div class="fc-label"><strong>岩灰素织</strong><span>素色色织</span></div></a><a class="float-card" href="products.html" style="--r:5deg;--t:50vh;--d:5"><div class="fc-img"><img src="images/web/swatch-5.jpg" alt="暖调格"/></div><div class="fc-label"><strong>暖调格</strong><span>家纺格调</span></div></a><a class="float-card" href="products.html" style="--r:-10deg;--t:14vh;--d:6"><div class="fc-img"><img src="images/web/hl-06.jpg" alt="斜纹条格"/></div><div class="fc-label"><strong>斜纹条格</strong><span>斜纹组织</span></div></a><a class="float-card" href="products.html" style="--r:7deg;--t:38vh;--d:7"><div class="fc-img"><img src="images/web/mosaic-6.jpg" alt="来样肌理"/></div><div class="fc-label"><strong>来样肌理</strong><span>来样开发</span></div></a></div>
+    <div class="stage-hero">
+      <div class="hero-media"><img src="images/web/hero.jpg" alt="色织格纹布面特写" /></div>
+      <div class="hero-content first">
+        <div class="hero-kicker split">New Collection</div>
+        <h1 class="hero-title"><span class="line"><span>Exclusive</span></span><span class="line"><span>色织图鉴</span></span></h1>
+        <a class="ghost-btn" href="products.html">Discover New Fabrics</a>
+      </div>
+      <div class="hero-content second">
+        <h2 class="hero-title sm"><span class="line"><span>恒隆 · 纱线先染</span></span><span class="line"><span>再织成布</span></span></h2>
+        <p>颜色写在纱线上：条、格、素织与肌理，由经纬配色在织造前决定。</p>
+      </div>
+      <div class="scroll-cue">Scroll to Discover</div>
+    </div>
   </div>
-  <div class="scroll-cue">Scroll to Discover</div>
 </section>
 
-<section class="intro-band reveal">
-  <div class="eyebrow">Henglong Yarn-Dyed</div>
-  <p>恒隆的色织布把颜色写在纱线上，再织成可触摸的条格与肌理。图鉴式浏览，让布面本身成为主叙事。</p>
-</section>
 
 <section class="collection-block reveal">
   <div class="head">
@@ -99,4 +106,5 @@
   <div>Yarn-Dyed Lookbook</div>
 </footer>
 <script src="js/main.js"></script>
+<script src="js/effects.js"></script>
 </body></html>
