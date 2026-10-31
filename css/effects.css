@@ -5,7 +5,7 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:1600vh;background:#F4F2EF;overscroll-behavior:contain}
+.stage{position:relative;height:1720vh;background:#F4F2EF;overscroll-behavior:contain}
 .stage-pin{
   position:sticky;top:0;
   height:100vh;height:100dvh;height:100svh;
@@ -19,37 +19,37 @@ html{scroll-behavior:auto}
 }
 .stage-cream{
   position:absolute;inset:0;z-index:0;pointer-events:none;background:#F4F2EF;
-  transform:translate3d(0,calc((1 - var(--hp,0))*104%),0);
+  transform:translate3d(0,calc((1 - var(--hp,0))*108%),0);
   will-change:transform;
 }
 .stage-hero{
   position:absolute;inset:0;z-index:4;overflow:hidden;will-change:transform,mask-image,opacity;
-  /* soft curtain wipe — slight diagonal peel + cream bed */
+  /* soft curtain wipe — stronger diagonal peel + cream bed */
   -webkit-mask-image:linear-gradient(
-    182deg,
+    186deg,
     #000 0%,
-    #000 calc((1 - var(--hp,0)) * 100% - 11vh),
-    rgba(0,0,0,.88) calc((1 - var(--hp,0)) * 100% - 1.2vh),
-    rgba(0,0,0,.35) calc((1 - var(--hp,0)) * 100% + 3.2vh),
-    transparent calc((1 - var(--hp,0)) * 100% + 8vh)
+    #000 calc((1 - var(--hp,0)) * 100% - 14vh),
+    rgba(0,0,0,.9) calc((1 - var(--hp,0)) * 100% - 2vh),
+    rgba(0,0,0,.4) calc((1 - var(--hp,0)) * 100% + 4vh),
+    transparent calc((1 - var(--hp,0)) * 100% + 11vh)
   );
   mask-image:linear-gradient(
-    182deg,
+    186deg,
     #000 0%,
-    #000 calc((1 - var(--hp,0)) * 100% - 11vh),
-    rgba(0,0,0,.88) calc((1 - var(--hp,0)) * 100% - 1.2vh),
-    rgba(0,0,0,.35) calc((1 - var(--hp,0)) * 100% + 3.2vh),
-    transparent calc((1 - var(--hp,0)) * 100% + 8vh)
+    #000 calc((1 - var(--hp,0)) * 100% - 14vh),
+    rgba(0,0,0,.9) calc((1 - var(--hp,0)) * 100% - 2vh),
+    rgba(0,0,0,.4) calc((1 - var(--hp,0)) * 100% + 4vh),
+    transparent calc((1 - var(--hp,0)) * 100% + 11vh)
   );
-  transform:translate3d(calc(var(--hp,0)*-1.6vw),calc(var(--hp,0)*-28vh),0) scale(calc(1 - var(--hp,0)*.11));
-  opacity:calc(1 - var(--hp,0)*0.22);
+  transform:translate3d(calc(var(--hp,0)*-2.2vw),calc(var(--hp,0)*-32vh),0) scale(calc(1 - var(--hp,0)*.13));
+  opacity:calc(1 - var(--hp,0)*0.38);
   pointer-events:auto;
 }
 .stage[data-phase="2"] .stage-hero{pointer-events:none}
 .stage-hero::before{
   content:"";position:absolute;left:2%;right:2%;top:calc((1 - var(--hp,0)) * 100% - 1px);height:3px;z-index:5;
   background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.6) 12%,rgba(255,255,255,1) 50%,rgba(255,255,255,.6) 88%,transparent 100%);
-  opacity:calc(var(--hp,0) * (1 - var(--hp,0)) * 8.6);
+  opacity:calc(var(--hp,0) * (1 - var(--hp,0)) * 10.2);
   box-shadow:0 0 22px 3px rgba(255,255,255,.42);
   filter:blur(.15px);pointer-events:none;
 }
@@ -115,26 +115,26 @@ html{scroll-behavior:auto}
 /* giant type behind floats — fully revealed after wipe */
 .stage-giant{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.53;
-  letter-spacing:calc(-.072em + var(--sp,0)*.075em + var(--hold,0)*.024em + var(--cross,0)*.03em);
-  font-size:calc(33vw * var(--gs,1));
-  transform:perspective(1200px) rotateX(calc(var(--depth,0)*-2.2deg)) translate3d(0,calc((1 - var(--hp,0))*66vh + var(--fp,0)*-.5vh),0) scale(calc(.6 + var(--hp,0)*.4 + var(--hold,0)*.06 + var(--pop,0)*.065));
-  opacity:calc(var(--hp,0) * (1.07 - var(--fp,0)*.015));
+  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.52;
+  letter-spacing:calc(-.078em + var(--sp,0)*.09em + var(--hold,0)*.032em + var(--cross,0)*.038em);
+  font-size:calc(34.5vw * var(--gs,1));
+  transform:perspective(1100px) rotateX(calc(var(--depth,0)*-3.4deg)) translate3d(0,calc((1 - var(--hp,0))*72vh + var(--fp,0)*-.7vh),0) scale(calc(.54 + var(--hp,0)*.46 + var(--hold,0)*.08 + var(--pop,0)*.08));
+  opacity:calc(var(--hp,0) * (1.08 - var(--fp,0)*.02));
   user-select:none;pointer-events:none;text-align:center;
   /* quadratic snap-to-sharp as wipe completes */
-  filter:contrast(1.2) blur(calc((1 - var(--hp,0)) * (1 - var(--hp,0)) * 16px));
+  filter:contrast(1.22) blur(calc((1 - var(--hp,0)) * (1 - var(--hp,0)) * 18px));
   will-change:transform,opacity,letter-spacing,filter;
   transform-style:preserve-3d;
 }
 .stage-giant span{display:block;white-space:nowrap;will-change:transform,opacity}
 /* line stagger on reveal; stay centered while early cards cross; split via --sp */
 .stage-giant .g1{
-  transform:translate3d(calc(var(--sp,0)*-34vw), calc((1 - var(--hp,0))*6vh), 0);
-  opacity:calc(0.35 + var(--hp,0)*.65);
+  transform:translate3d(calc(var(--sp,0)*-38vw), calc((1 - var(--hp,0))*8vh), 0);
+  opacity:calc(0.28 + var(--hp,0)*.72);
 }
 .stage-giant .g2{
-  transform:translate3d(calc(var(--sp,0)*34vw), calc((1 - var(--hp2,0))*10vh), 0);
-  opacity:calc(0.2 + var(--hp2,0)*.8);
+  transform:translate3d(calc(var(--sp,0)*38vw), calc((1 - var(--hp2,0))*14vh), 0);
+  opacity:calc(0.12 + var(--hp2,0)*.88);
   margin-top:0;
 }
 .stage-veil{
@@ -151,9 +151,9 @@ html{scroll-behavior:auto}
 }
 .stage-floats .track{
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
-  gap:clamp(44px,5.4vw,100px);padding-left:90vw;padding-right:90vw;will-change:transform,filter;
+  gap:clamp(40px,5.1vw,92px);padding-left:92vw;padding-right:92vw;will-change:transform,filter;
   transform-style:preserve-3d;
-  filter:blur(calc(var(--scrub,0)*1.25px));
+  filter:blur(calc(var(--scrub,0)*1.55px));
 }
 .float-card{
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
@@ -163,7 +163,7 @@ html{scroll-behavior:auto}
     rotateY(var(--ry,0deg))
     rotateX(var(--rx,0deg))
     rotate(calc(var(--r) + var(--spin,0deg) + var(--tilt,0deg)))
-    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.12)));
+    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.16)));
   background:#fff;border-radius:12px;
   box-shadow:
     0 calc(16px + var(--prox,0)*36px + var(--punch,0)*12px) calc(40px + var(--prox,0)*54px) rgba(0,0,0,calc(.14 + var(--prox,0)*.28 + var(--punch,0)*.1)),
@@ -262,7 +262,7 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:1280vh}
+  .stage{height:1380vh}
   .float-card{width:74vw}
   .stage-giant{font-size:34vw}
   .stage-floats{-webkit-mask-image:none;mask-image:none}
