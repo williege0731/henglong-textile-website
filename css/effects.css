@@ -5,12 +5,13 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:1100vh;background:#F4F2EF}
+.stage{position:relative;height:1160vh;background:#F4F2EF;overscroll-behavior:contain}
 .stage-pin{
   position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;
   isolation:isolate;background:#F4F2EF;
-  transform:scale(calc(1 - var(--fp,0)*.018));
+  transform:scale(calc(1 - var(--fp,0)*.022));
   will-change:transform;
+  touch-action:pan-y;
 }
 .stage-hero{
   position:absolute;inset:0;z-index:4;overflow:hidden;will-change:transform,mask-image;
@@ -18,16 +19,16 @@ html{scroll-behavior:auto}
   -webkit-mask-image:linear-gradient(
     to bottom,
     #000 0%,
-    #000 calc((1 - var(--hp,0)) * 100% - 6.5vh),
-    transparent calc((1 - var(--hp,0)) * 100% + 2.2vh)
+    #000 calc((1 - var(--hp,0)) * 100% - 7.5vh),
+    transparent calc((1 - var(--hp,0)) * 100% + 2.6vh)
   );
   mask-image:linear-gradient(
     to bottom,
     #000 0%,
-    #000 calc((1 - var(--hp,0)) * 100% - 6.5vh),
-    transparent calc((1 - var(--hp,0)) * 100% + 2.2vh)
+    #000 calc((1 - var(--hp,0)) * 100% - 7.5vh),
+    transparent calc((1 - var(--hp,0)) * 100% + 2.6vh)
   );
-  transform:translate3d(0,calc(var(--hp,0)*-12vh),0) scale(calc(1 - var(--hp,0)*.055));
+  transform:translate3d(0,calc(var(--hp,0)*-14vh),0) scale(calc(1 - var(--hp,0)*.06));
   pointer-events:auto;
 }
 .stage[data-phase="2"] .stage-hero{pointer-events:none}
@@ -99,19 +100,19 @@ html{scroll-behavior:auto}
 /* giant type behind floats — fully revealed after wipe */
 .stage-giant{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.65;
-  letter-spacing:calc(-.05em + var(--fp,0)*.12em);
-  font-size:calc(23.5vw * var(--gs,1));
-  transform:translate3d(0,calc((1 - var(--hp,0))*52vh + var(--fp,0)*-2.5vh),0) scale(calc(.76 + var(--hp,0)*.24));
-  opacity:calc(var(--hp,0) * (1.02 - var(--fp,0)*.07));
+  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.64;
+  letter-spacing:calc(-.052em + var(--fp,0)*.13em + var(--hold,0)*.01em);
+  font-size:calc(24vw * var(--gs,1));
+  transform:translate3d(0,calc((1 - var(--hp,0))*52vh + var(--fp,0)*-2.5vh),0) scale(calc(.76 + var(--hp,0)*.24 + var(--hold,0)*.03));
+  opacity:calc(var(--hp,0) * (1.02 - var(--fp,0)*.06));
   user-select:none;pointer-events:none;text-align:center;
-  filter:contrast(1.08) blur(calc((1 - var(--hp,0)) * 8px));
+  filter:contrast(1.09) blur(calc((1 - var(--hp,0)) * 7px));
   will-change:transform,opacity,letter-spacing,filter;
 }
 .stage-giant span{display:block;white-space:nowrap}
 /* hold centered after wipe; split apart only as cards scrub across */
-.stage-giant .g1{transform:translateX(calc(var(--fp,0)*-42vw))}
-.stage-giant .g2{transform:translateX(calc(var(--fp,0)*42vw));margin-top:.003em}
+.stage-giant .g1{transform:translateX(calc(var(--fp,0)*-44vw))}
+.stage-giant .g2{transform:translateX(calc(var(--fp,0)*44vw));margin-top:.002em}
 .stage-veil{
   position:absolute;inset:0;z-index:2;pointer-events:none;
   background:radial-gradient(ellipse at 50% 48%,transparent 18%,rgba(244,242,239,.28) 62%,rgba(244,242,239,.55) 100%);
@@ -122,19 +123,20 @@ html{scroll-behavior:auto}
 .stage-floats{position:absolute;inset:0;z-index:3;pointer-events:none;perspective:1800px}
 .stage-floats .track{
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
-  gap:clamp(40px,5vw,88px);padding-left:70vw;padding-right:64vw;will-change:transform;
+  gap:clamp(44px,5.4vw,96px);padding-left:66vw;padding-right:66vw;will-change:transform;
   transform-style:preserve-3d
 }
 .float-card{
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
-  width:clamp(156px,15vw,228px);margin-top:var(--t);
+  width:clamp(148px,14.4vw,216px);margin-top:var(--t);
   transform:rotate(calc(var(--r) + var(--spin,0deg) + var(--tilt,0deg))) translateY(calc(var(--bob,0)*1px)) scale(calc(var(--fs,1) * var(--enter,1))) translateZ(var(--z,0px));
-  background:#fff;border-radius:12px;box-shadow:0 32px 80px rgba(0,0,0,.27);
+  background:#fff;border-radius:12px;
+  box-shadow:0 calc(24px + var(--prox,0)*18px) calc(60px + var(--prox,0)*28px) rgba(0,0,0,calc(.2 + var(--prox,0)*.14));
   color:#1A1A1A;
-  transition:box-shadow .7s;
+  transition:box-shadow .35s;
   /* solid polaroids — type peeks in mid-band between high/low cards */
   opacity:calc(var(--hp,0) * var(--vis,1));
-  will-change:transform,opacity;
+  will-change:transform,opacity,box-shadow;
   backface-visibility:hidden;
 }
 .float-card:hover{
@@ -223,7 +225,7 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:840vh}
+  .stage{height:880vh}
   .float-card{width:62vw}
   .stage-giant{font-size:26vw}
   .stage-floats .track{padding-left:95vw;gap:22px}
