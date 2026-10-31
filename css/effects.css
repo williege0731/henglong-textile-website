@@ -5,10 +5,12 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:860vh;background:#F4F2EF}
+.stage{position:relative;height:920vh;background:#F4F2EF}
 .stage-pin{
   position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;
   isolation:isolate;background:#F4F2EF;
+  transform:scale(calc(1 - var(--fp,0)*.012));
+  will-change:transform;
 }
 .stage-hero{
   position:absolute;inset:0;z-index:4;overflow:hidden;will-change:transform,mask-image;
@@ -16,14 +18,14 @@ html{scroll-behavior:auto}
   -webkit-mask-image:linear-gradient(
     to bottom,
     #000 0%,
-    #000 calc((1 - var(--hp,0)) * 100% - 3.5vh),
-    transparent calc((1 - var(--hp,0)) * 100% + 1.2vh)
+    #000 calc((1 - var(--hp,0)) * 100% - 5vh),
+    transparent calc((1 - var(--hp,0)) * 100% + 1.8vh)
   );
   mask-image:linear-gradient(
     to bottom,
     #000 0%,
-    #000 calc((1 - var(--hp,0)) * 100% - 3.5vh),
-    transparent calc((1 - var(--hp,0)) * 100% + 1.2vh)
+    #000 calc((1 - var(--hp,0)) * 100% - 5vh),
+    transparent calc((1 - var(--hp,0)) * 100% + 1.8vh)
   );
   transform:translate3d(0,calc(var(--hp,0)*-10vh),0) scale(calc(1 - var(--hp,0)*.045));
   pointer-events:auto;
@@ -94,40 +96,42 @@ html{scroll-behavior:auto}
 /* giant type behind floats — fully revealed after wipe */
 .stage-giant{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.72;
-  letter-spacing:calc(-.04em + var(--fp,0)*.08em);
-  font-size:calc(21vw * var(--gs,1));
-  transform:translate3d(0,calc((1 - var(--hp,0))*44vh),0) scale(calc(.84 + var(--hp,0)*.16));
-  opacity:calc(var(--hp,0) * (1.05 - var(--fp,0)*.28));
+  font-family:"Bodoni Moda",serif;color:#1A1A1A;line-height:.7;
+  letter-spacing:calc(-.042em + var(--fp,0)*.09em);
+  font-size:calc(22vw * var(--gs,1));
+  transform:translate3d(0,calc((1 - var(--hp,0))*46vh),0) scale(calc(.82 + var(--hp,0)*.18));
+  opacity:calc(var(--hp,0) * (1.02 - var(--fp,0)*.12));
   user-select:none;pointer-events:none;text-align:center;
-  filter:contrast(1.04);
+  filter:contrast(1.05);
   will-change:transform,opacity,letter-spacing;
 }
 .stage-giant span{display:block;white-space:nowrap}
-.stage-giant .g1{transform:translateX(calc((var(--fp,0) - .5)*34vw))}
-.stage-giant .g2{transform:translateX(calc((.5 - var(--fp,0))*34vw));margin-top:.01em}
+.stage-giant .g1{transform:translateX(calc((var(--fp,0) - .5)*38vw))}
+.stage-giant .g2{transform:translateX(calc((.5 - var(--fp,0))*38vw));margin-top:.008em}
 .stage-veil{
   position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 48%,transparent 22%,rgba(244,242,239,.42) 68%,rgba(244,242,239,.72) 100%);
-  opacity:calc(var(--hp,0)*.55 + var(--fp,0)*.2);
+  background:radial-gradient(ellipse at 50% 48%,transparent 18%,rgba(244,242,239,.28) 62%,rgba(244,242,239,.55) 100%);
+  opacity:calc(var(--hp,0)*.4 + var(--fp,0)*.15);
 }
 
 /* floating tilted polaroid cards crossing type */
-.stage-floats{position:absolute;inset:0;z-index:3;pointer-events:none;perspective:1400px}
+.stage-floats{position:absolute;inset:0;z-index:3;pointer-events:none;perspective:1600px}
 .stage-floats .track{
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
-  gap:clamp(18px,2.8vw,48px);padding-left:88vw;padding-right:48vw;will-change:transform;
+  gap:clamp(16px,2.4vw,42px);padding-left:82vw;padding-right:55vw;will-change:transform;
   transform-style:preserve-3d
 }
 .float-card{
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
-  width:clamp(188px,18vw,272px);margin-top:var(--t);
-  transform:rotate(var(--r)) translateY(calc(var(--bob,0)*1px)) scale(var(--fs,1)) translateZ(var(--z,0px));
-  background:#fff;border-radius:12px;box-shadow:0 28px 70px rgba(0,0,0,.24);
+  width:clamp(178px,17.2vw,258px);margin-top:var(--t);
+  transform:rotate(calc(var(--r) + var(--spin,0deg))) translateY(calc(var(--bob,0)*1px)) scale(var(--fs,1)) translateZ(var(--z,0px));
+  background:#fff;border-radius:12px;box-shadow:0 30px 76px rgba(0,0,0,.26);
   color:#1A1A1A;
   transition:box-shadow .7s;
-  opacity:calc(var(--hp,0) * (.55 + var(--fp,0)*.45));
+  /* solid polaroids — type peeks BETWEEN cards, not through them */
+  opacity:calc(var(--hp,0) * .98);
   will-change:transform;
+  backface-visibility:hidden;
 }
 .float-card:hover{
   transform:rotate(0deg) scale(1.09) translateY(-12px);
@@ -215,7 +219,7 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:680vh}
+  .stage{height:720vh}
   .float-card{width:62vw}
   .stage-giant{font-size:26vw}
   .stage-floats .track{padding-left:95vw;gap:22px}
