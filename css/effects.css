@@ -5,7 +5,7 @@ html{scroll-behavior:auto}
 .site-header.on-hero .wordmark small{opacity:.9}
 
 /* ---- pinned lookbook stage ---- */
-.stage{position:relative;height:2320vh;background:#F4F2EF;overscroll-behavior:contain}
+.stage{position:relative;height:2440vh;background:#F4F2EF;overscroll-behavior:contain}
 .stage-pin{
   position:sticky;top:0;
   height:100vh;height:100dvh;height:100svh;height:100lvh;
@@ -44,14 +44,14 @@ html{scroll-behavior:auto}
     transparent calc((1 - var(--hw,var(--hp,0))) * 100% + 18vh)
   );
   transform:translate3d(calc(var(--hw,var(--hp,0))*-2.8vw),calc(var(--hw,var(--hp,0))*-36vh),0) scale(calc(1 - var(--hw,var(--hp,0))*.14)) rotate(calc(var(--hw,var(--hp,0))*-0.45deg));
-  opacity:calc(1 - var(--hw,var(--hp,0))*0.48);
+  opacity:calc(1 - var(--hw,var(--hp,0))*0.42);
   pointer-events:auto;
 }
 .stage[data-phase="2"] .stage-hero{pointer-events:none}
 .stage-hero::before{
   content:"";position:absolute;left:2%;right:2%;top:calc((1 - var(--hw,var(--hp,0))) * 100% - 1px);height:3px;z-index:5;
   background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.6) 12%,rgba(255,255,255,1) 50%,rgba(255,255,255,.6) 88%,transparent 100%);
-  opacity:calc(var(--hw,var(--hp,0)) * (1 - var(--hw,var(--hp,0))) * 11);
+  opacity:calc(var(--hw,var(--hp,0)) * (1 - var(--hw,var(--hp,0))) * 12.5);
   box-shadow:0 0 22px 3px rgba(255,255,255,.42);
   filter:blur(.15px);pointer-events:none;
 }
@@ -117,12 +117,12 @@ html{scroll-behavior:auto}
 /* giant type behind floats — fully revealed after wipe */
 .stage-giant{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-family:"Bodoni Moda",serif;color:#0c0c0c;line-height:.5;
-  letter-spacing:calc(-.09em + var(--sp,0)*.12em + var(--hold,0)*.045em + var(--cross,0)*.055em);
-  font-size:calc(37vw * var(--gs,1));
-  transform:perspective(920px) rotateX(calc(var(--depth,0)*-5.6deg)) translate3d(0,calc((1 - var(--hp,0))*78vh + var(--fp,0)*-1.1vh),0) scale(calc(.46 + var(--hp,0)*.54 + var(--hold,0)*.11 + var(--pop,0)*.11 + var(--cross,0)*.02));
+  font-family:"Bodoni Moda",serif;color:#0a0a0a;line-height:.495;
+  letter-spacing:calc(-.092em + var(--sp,0)*.13em + var(--hold,0)*.05em + var(--cross,0)*.06em);
+  font-size:calc(37.5vw * var(--gs,1));
+  transform:perspective(900px) rotateX(calc(var(--depth,0)*-6deg)) translate3d(0,calc((1 - var(--hp,0))*80vh + var(--fp,0)*-1.2vh),0) scale(calc(.45 + var(--hp,0)*.55 + var(--hold,0)*.12 + var(--pop,0)*.12 + var(--cross,0)*.025));
   /* rise opacity faster mid-wipe so type reads under peeling hero */
-  opacity:min(1, calc(var(--hp,0) * 1.95 - var(--fp,0)*.05));
+  opacity:min(1, calc(var(--hp,0) * 2.05 - var(--fp,0)*.05));
   user-select:none;pointer-events:none;text-align:center;
   /* quartic snap — clears even earlier midwipe */
   filter:contrast(1.32) blur(calc((1 - var(--hp,0)) * (1 - var(--hp,0)) * (1 - var(--hp,0)) * (1 - var(--hp,0)) * 26px));
@@ -154,19 +154,20 @@ html{scroll-behavior:auto}
 }
 .stage-floats .track{
   position:absolute;top:0;left:0;height:100%;display:flex;align-items:flex-start;
-  gap:clamp(30px,4.2vw,74px);padding-left:70vw;padding-right:80vw;will-change:transform,filter;
+  gap:clamp(28px,4vw,70px);padding-left:68vw;padding-right:78vw;will-change:transform,filter;
   transform-style:preserve-3d;
   filter:blur(calc(var(--scrub,0)*1.85px));
 }
 .float-card{
   pointer-events:auto;align-self:flex-start;height:auto;position:relative;flex:0 0 auto;
-  width:clamp(180px,17.5vw,268px);margin-top:var(--t);margin-left:var(--mx,0px);
+  width:clamp(182px,17.8vw,272px);margin-top:var(--t);margin-left:var(--mx,0px);
+  transform-origin:50% 62%;
   transform:
     translate3d(0, calc(var(--bob,0)*1px - var(--lift,0)*1px + var(--rowy,0)*1px), var(--z,0px))
+    rotate(calc(var(--r) * (1.12 + var(--punch,0)*.32) + var(--spin,0deg) + var(--tilt,0deg) + var(--lean,0deg)))
     rotateY(var(--ry,0deg))
     rotateX(var(--rx,0deg))
-    rotate(calc(var(--r) * (1.08 + var(--punch,0)*.28) + var(--spin,0deg) + var(--tilt,0deg) + var(--lean,0deg)))
-    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.22)));
+    scale(calc(var(--fs,1) * var(--enter,1) * (1 + var(--punch,0)*.24)));
   background:#fff;border-radius:12px;
   box-shadow:
     0 calc(18px + var(--prox,0)*42px + var(--punch,0)*18px) calc(44px + var(--prox,0)*60px) rgba(0,0,0,calc(.16 + var(--prox,0)*.3 + var(--punch,0)*.14)),
@@ -272,7 +273,7 @@ html{scroll-behavior:auto}
   .stage-giant,.stage-floats{display:none}
 }
 @media (max-width:760px){
-  .stage{height:1880vh}
+  .stage{height:1980vh}
   .float-card{width:74vw}
   .stage-giant{font-size:34vw}
   .stage-floats{-webkit-mask-image:none;mask-image:none}
