@@ -60,10 +60,10 @@
   const velvet=document.querySelector('.velvet-band .visual');
 
   /* Progress map (of stage scroll 0..1):
-     0–0.05  hero settle (p0)
-     0.03–0.22 soft wipe + giant rise (hp); g2 lags as hp2
-     0.22–0.38 type hold / breath / pop settle
-     0.34–1.0  cards scrub; type split lags via sp
+     0–0.04  hero settle (p0)
+     0.02–0.20 soft wipe + giant rise (hp); g2 lags as hp2
+     0.20–0.40 type hold / breath / pop settle
+     0.38–1.0  cards scrub; type split lags via sp
   */
   function targets(){
     const y=scrollY,vh=innerHeight;
@@ -71,15 +71,15 @@
     if(stage && !reduce){
       const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-vh);
       p=clamp((y-top)/len);
-      p0=easeOut(clamp(p/0.035));
-      hp=easeInOut(clamp((p-0.014)/0.2));
-      /* crawl then glide across type */
-      const raw=clamp((p-0.34)/0.66);
-      fp=Math.pow(easeInOut(raw), 0.85);
-      sp=Math.pow(clamp((fp-0.22)/0.78), 1.28);
-      gs=1-fp*0.22;
-      phase=p<0.035?'0':(p<0.38?'1':'2');
-      onHero=hp<0.54;
+      p0=easeOut(clamp(p/0.032));
+      hp=easeInOut(clamp((p-0.012)/0.18));
+      /* longer hold; crawl then glide across type */
+      const raw=clamp((p-0.38)/0.62);
+      fp=Math.pow(easeInOut(raw), 0.82);
+      sp=Math.pow(clamp((fp-0.24)/0.76), 1.3);
+      gs=1-fp*0.2;
+      phase=p<0.032?'0':(p<0.40?'1':'2');
+      onHero=hp<0.55;
     }
     return {y,vh,p0,hp,fp,sp,gs,phase,onHero,p};
   }
@@ -113,9 +113,9 @@
       /* look-ahead creamier spring scrub */
       if(hard){spring.fp=t.fp;spring.v=0;spring.sp=t.sp;spring.sv=0;}
       else{
-        const s1=springStep(spring.fp, spring.v, clamp(t.fp + coast + look), dt, 4.6*boost);
+        const s1=springStep(spring.fp, spring.v, clamp(t.fp + coast + look), dt, 3.8*boost);
         spring.fp=s1.x; spring.v=s1.v;
-        const s2=springStep(spring.sp, spring.sv, t.sp, dt, 3.6*boost);
+        const s2=springStep(spring.sp, spring.sv, t.sp, dt, 3.0*boost);
         spring.sp=s2.x; spring.sv=s2.v;
       }
       smooth.fp=spring.fp;
@@ -131,8 +131,8 @@
       const spV=clamp(smooth.sp);
       const popT=(hpV>0.9 && fpV<0.05) ? Math.sin(clamp((hpV-0.9)/0.1)*Math.PI) : 0;
       smooth.pop=lerp(smooth.pop, popT, hard?1:expAlpha(4.2,dt));
-      const holdT=(hpV>0.97 && fpV<0.045) ? (0.5+0.5*Math.sin(now*0.00125)) : 0;
-      smooth.hold=lerp(smooth.hold, holdT, hard?1:expAlpha(2.4,dt));
+      const holdT=(hpV>0.97 && fpV<0.04) ? (0.5+0.5*Math.sin(now*0.0011)) : 0;
+      smooth.hold=lerp(smooth.hold, holdT, hard?1:expAlpha(2.2,dt));
       /* velocity smear on track while scrubbing fast */
       const scrubT=clamp((vel-0.35)/1.6);
       smooth.scrub=lerp(smooth.scrub, scrubT, hard?1:expAlpha(7.5,dt));
@@ -167,10 +167,10 @@
           const lift=prox*22;
           const scale=0.9+prox*0.17+Math.sin(fpV*2.9+i)*0.014;
           const z=(prox*80+(i%2===0?10:-8)+Math.sin(fpV*2.1+i)*14).toFixed(1)+'px';
-          const spn=(spin*(i%2===0?1:-1)*3.6).toFixed(2)+'deg';
-          const tilt=(nx*-10.5).toFixed(2)+'deg';
-          const ry=(nx*-18 - spin*2.8).toFixed(2)+'deg';
-          const rx=(prox*-4.2 + Math.sin(fpV*1.9+i)*1.4).toFixed(2)+'deg';
+          const spn=(spin*(i%2===0?1:-1)*4.2).toFixed(2)+'deg';
+          const tilt=(nx*-12).toFixed(2)+'deg';
+          const ry=(nx*-20 - spin*3.2).toFixed(2)+'deg';
+          const rx=(prox*-5 + Math.sin(fpV*1.9+i)*1.6).toFixed(2)+'deg';
           c.style.setProperty('--bob',bob.toFixed(2));
           c.style.setProperty('--lift',lift.toFixed(2));
           c.style.setProperty('--fs',scale.toFixed(3));
@@ -233,7 +233,7 @@
   function goShot(name){
     if(!stage||reduce)return;
     const top=stage.offsetTop,len=Math.max(1,stage.offsetHeight-innerHeight);
-    const map={hero:0.02,wipe:0.26,midwipe:0.08,peek:0.35,stage1:0.26,cards:0.6,stage2:0.6,stage0:0.02,stage3:0.94};
+    const map={hero:0.02,wipe:0.24,midwipe:0.07,peek:0.39,stage1:0.24,cards:0.62,stage2:0.62,stage0:0.02,stage3:0.94};
     const p=map[name];
     if(p==null)return;
     scrollTo(0, top+len*p);
